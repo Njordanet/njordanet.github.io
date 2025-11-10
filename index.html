@@ -8,10 +8,9 @@
     /* Base theme */
     body {
       background-color: #000000;
-      color: #00FF99;
+      color: #CCFFEE;
       margin: 0;
-      font-family: "Courier New", monospace;
-      text-shadow: 0 0 3px #00FF99, 0 0 10px #00FF99;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background-image: repeating-linear-gradient(
         rgba(0, 255, 100, 0.02) 0px,
         rgba(0, 0, 0, 0.15) 2px
@@ -22,7 +21,7 @@
 
     a {
       color: #00FFFF;
-      text-decoration: none;
+      text-decoration: underline;
       transition: all 0.2s ease;
       cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="4" fill="%2300ffff" stroke="%2300ffff" stroke-width="2" /></svg>') 4 4, crosshair;
     }
@@ -53,6 +52,7 @@
       text-align: center;
       color: #00FF99;
       border-bottom: 1px solid #00FF99;
+      font-family: "Courier New", monospace;
     }
 
     .box-body {
@@ -71,6 +71,7 @@
       font-size: 12px;
       font-style: italic;
       color: #33FFAA;
+      text-shadow: 0 0 6px #00FF99;
     }
 
     .marquee-box {
@@ -80,6 +81,8 @@
 
     marquee {
       color: #00FF99;
+      font-family: "Courier New", monospace;
+      text-shadow: 0 0 6px #00FF99;
     }
 
     nav {
@@ -89,11 +92,14 @@
       padding: 8px;
       font-size: 12px;
       margin-bottom: 12px;
+      font-family: "Courier New", monospace;
+      text-shadow: 0 0 6px #00FF99;
+      white-space: nowrap;
+      overflow-x: auto;
     }
 
     nav a {
       color: #00FF99;
-      text-shadow: 0 0 5px #00FF99;
       padding: 0 6px;
     }
 
@@ -101,6 +107,7 @@
       color: #00FF99;
       font-size: 20px;
       margin: 0 0 8px 0;
+      font-family: "Courier New", monospace;
       text-shadow: 0 0 10px #00FF99;
     }
 
@@ -108,10 +115,13 @@
       color: #33FFAA;
       margin-top: 12px;
       margin-bottom: 4px;
+      font-family: "Courier New", monospace;
+      text-shadow: 0 0 8px #00FF99;
     }
 
     p, li {
       line-height: 1.5em;
+      text-shadow: none;
     }
 
     .footer {
@@ -122,6 +132,8 @@
       background-color: #001100;
       padding: 8px;
       margin-top: 16px;
+      font-family: "Courier New", monospace;
+      text-shadow: 0 0 6px #00FF99;
     }
 
     .under-construction {
@@ -131,6 +143,7 @@
       padding: 8px;
       font-size: 11px;
       color: #00FF99;
+      font-family: "Courier New", monospace;
       text-shadow: 0 0 6px #00FF99;
     }
 
@@ -179,7 +192,7 @@
     <nav>
       [ <a href="index.html">Home</a> ]
       [ <a href="https://blog.njorda.net">Blog</a> ]
-      [ <a href="#about">About</a> ]
+      [ <a href="about.html">About</a> ]
       [ <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a> ]
     </nav>
 
@@ -190,69 +203,24 @@
       </div>
       <div class="box-body">
         <p>
-          You’ve reached my little corner of the web — no dark patterns, no infinite scroll,
-          just text, links, and a touch of retro code glow.
+          You’ve reached my little corner of the web: no dark patterns, no infinite scroll,
+          just text, links, and a touch of retro terminal glow.
         </p>
-        <p>
-          You’ll find my writing, experiments, and various obsessions split across a couple of places:
-        </p>
+        <p>You’ll find my writing, experiments, and various obsessions split across a couple of places:</p>
         <ul>
-          <li><b>Blog:</b> long-form posts live at <a href="https://blog.njorda.net">blog.njorda.net</a></li>
-          <li><b>Bluesky:</b> stray thoughts, links, and whatever I’m currently poking at</li>
+          <li>
+            <b>Blog:</b> long-form posts live at
+            <a href="https://blog.njorda.net">blog.njorda.net</a>
+          </li>
+          <li>
+            <b>Bluesky:</b> stray thoughts, links, and whatever I’m currently poking at
+            on
+            <a href="https://bsky.app/profile/njorda.net" target="_blank">bsky.app/profile/njorda.net</a>
+          </li>
         </ul>
-      </div>
-    </div>
-
-    <!-- About -->
-    <a name="about"></a>
-    <div class="box">
-      <div class="box-header">
-        <h2>&gt; About</h2>
-      </div>
-      <div class="box-body">
-        <h3>Njorda's Notebook</h3>
-        <p><b>Hey, I’m Nick</b></p>
-        <p><b>Nick Jordan</b><br><i>October 17, 2025</i></p>
-
         <p>
-          Welcome to my little corner of the internet where I share the random things I’m into:
-          personal projects, hobbies, food, travels, thoughts, opinions, and the occasional product review.
-          It’s a mix, and that’s the fun of it.
-        </p>
-
-        <h3>Work in a nutshell</h3>
-        <p>
-          I’ve worked in marketing and performance analytics since 2015, after graduating from Eastern Michigan University
-          with a dual major in finance and marketing. I spent years on the agency side and, in 2024, moved client-side to
-          Ford Motor Company, focusing on campaign measurement. I love the blend of data, experimentation, and impact.
-        </p>
-
-        <h3>My general vibe</h3>
-        <p>
-          I’m a serial hobbyist who takes the 80/20 rule to the limit. I’m a proud jack-of-many-trades and a master of the
-          stuff I do for work. I like learning, tinkering, and building systems that make life a little smoother.
-        </p>
-
-        <h3>Things I’m into</h3>
-        <p><b>Technology:</b> Consumer tech nerd to the fullest. Retro deep dives, gadgets, software, all of it.</p>
-        <p><b>Productivity:</b> Forever tweaking systems. Lists, databases, automation, AI — process over outcome.</p>
-        <p><b>Running:</b> Track and cross-country turned half and full marathons.</p>
-        <p><b>Strength training:</b> Your body’s a 401k. Invest early, lift often.</p>
-        <p><b>Sports:</b> NFL: Patriots + Lions. College: Michigan + EMU.</p>
-        <p><b>Writing:</b> Blogs, satire, journals — skill optional, fun required.</p>
-        <p><b>Gaming:</b> PC + retro. Guild Wars 2 and RPGs > FPS.</p>
-        <p><b>Food & drinks:</b> Pizza, bread, savory bakes. Try everything.</p>
-        <p><b>Outdoors:</b> Hiking, biking, camping, kayaking.</p>
-        <p><b>Music:</b> Techno, house, alt, indie, dream pop.</p>
-        <p><b>Travel:</b> Japan, Iceland, Costa Rica — favorites so far.</p>
-        <p><b>Movies:</b> Sci-fi, drama, comedy. Blade Runner, Dune, Star Wars.</p>
-        <p><b>Photography:</b> Fujifilm X-T30 II. Slightly less bad photos.</p>
-        <p><b>Skiing:</b> Michigan hills, Ikon Pass dreams.</p>
-
-        <h3>Why I write here</h3>
-        <p>
-          This site is my home base for documenting, thinking out loud, and sharing what I learn.
-          If it helps or entertains, cool. If not — it still glows green.
+          Want the full story? Head over to the
+          <a href="about.html">About page</a> to see what I’m into and what this place is for.
         </p>
       </div>
     </div>
@@ -265,6 +233,7 @@
       <div class="box-body">
         &raquo; <a href="https://blog.njorda.net" target="_blank">Blog / Substack</a><br>
         &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a><br>
+        &raquo; <a href="about.html">About Njorda</a><br>
       </div>
     </div>
 
