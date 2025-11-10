@@ -8,9 +8,9 @@
     /* Base theme */
     body {
       background-color: #000000;
-      color: #CCFFEE;
+      color: #00FF66; /* terminal green */
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Courier New", monospace;
       background-image: repeating-linear-gradient(
         rgba(0, 255, 100, 0.02) 0px,
         rgba(0, 0, 0, 0.15) 2px
@@ -20,7 +20,7 @@
     }
 
     a {
-      color: #00FFFF;
+      color: #33CCFF; /* cyber blue */
       text-decoration: underline;
       transition: all 0.2s ease;
       cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="4" fill="%2300ffff" stroke="%2300ffff" stroke-width="2" /></svg>') 4 4, crosshair;
@@ -40,19 +40,19 @@
     }
 
     .box {
-      border: 1px solid #00FF99;
+      border: 1px solid #00AEEF; /* cyber blue border */
       background-color: #000010;
       margin-bottom: 14px;
-      box-shadow: 0 0 8px #00FF66;
+      box-shadow: 0 0 8px #00AEEF;
     }
 
     .box-header {
-      background-color: #001a00;
+      background-color: #001326;
       padding: 10px;
       text-align: center;
-      color: #00FF99;
-      border-bottom: 1px solid #00FF99;
-      font-family: "Courier New", monospace;
+      color: #33CCFF;
+      border-bottom: 1px solid #00AEEF;
+      text-shadow: 0 0 10px #33CCFF;
     }
 
     .box-body {
@@ -62,89 +62,83 @@
     .header-title {
       font-size: 32px;
       font-weight: bold;
-      color: #00FF99;
-      text-shadow: 0 0 8px #00FF99, 0 0 20px #00FF66;
+      color: #33CCFF;
+      text-shadow: 0 0 8px #33CCFF, 0 0 20px #00AEEF;
       letter-spacing: 1px;
     }
 
     .tagline {
       font-size: 12px;
       font-style: italic;
-      color: #33FFAA;
-      text-shadow: 0 0 6px #00FF99;
+      color: #66DDFF;
+      text-shadow: 0 0 6px #33CCFF;
     }
 
     .marquee-box {
-      border-color: #00FF99;
-      background-color: #001100;
+      border-color: #00AEEF;
+      background-color: #000818;
     }
 
     marquee {
-      color: #00FF99;
-      font-family: "Courier New", monospace;
-      text-shadow: 0 0 6px #00FF99;
+      color: #33CCFF;
+      text-shadow: 0 0 6px #33CCFF;
     }
 
     nav {
-      background-color: #001100;
-      border: 1px solid #00FF99;
+      background-color: #000818;
+      border: 1px solid #00AEEF;
       text-align: center;
       padding: 8px;
       font-size: 12px;
       margin-bottom: 12px;
-      font-family: "Courier New", monospace;
-      text-shadow: 0 0 6px #00FF99;
+      text-shadow: 0 0 6px #33CCFF;
       white-space: nowrap;
       overflow-x: auto;
     }
 
     nav a {
-      color: #00FF99;
+      color: #33CCFF;
       padding: 0 6px;
     }
 
     h2 {
-      color: #00FF99;
+      color: #33CCFF;
       font-size: 20px;
       margin: 0 0 8px 0;
-      font-family: "Courier New", monospace;
-      text-shadow: 0 0 10px #00FF99;
+      text-shadow: 0 0 10px #33CCFF;
     }
 
     h3 {
-      color: #33FFAA;
+      color: #66DDFF;
       margin-top: 12px;
       margin-bottom: 4px;
-      font-family: "Courier New", monospace;
-      text-shadow: 0 0 8px #00FF99;
+      text-shadow: 0 0 8px #33CCFF;
     }
 
     p, li {
       line-height: 1.5em;
-      text-shadow: none;
+      text-shadow: none; /* keep body readable */
     }
 
     .footer {
       font-size: 11px;
       text-align: center;
-      color: #00FF99;
-      border: 1px solid #00FF99;
-      background-color: #001100;
+      color: #33CCFF;
+      border: 1px solid #00AEEF;
+      background-color: #000818;
       padding: 8px;
       margin-top: 16px;
-      font-family: "Courier New", monospace;
-      text-shadow: 0 0 6px #00FF99;
+      text-shadow: 0 0 6px #33CCFF;
     }
 
     .under-construction {
       text-align: center;
-      border: 1px dashed #00FF66;
-      background-color: #000800;
+      border: 1px dashed #00AEEF;
+      background-color: #000010;
       padding: 8px;
       font-size: 11px;
-      color: #00FF99;
-      font-family: "Courier New", monospace;
-      text-shadow: 0 0 6px #00FF99;
+      color: #33CCFF;
+      text-shadow: 0 0 6px #33CCFF;
     }
 
     .flicker {
@@ -190,9 +184,9 @@
 
     <!-- Navigation -->
     <nav>
-      [ <a href="index.html">Home</a> ]
+      [ <a href="/index.html">Home</a> ]
       [ <a href="https://blog.njorda.net">Blog</a> ]
-      [ <a href="about.html">About</a> ]
+      [ <a href="/about.html">About</a> ]
       [ <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a> ]
     </nav>
 
@@ -204,7 +198,7 @@
       <div class="box-body">
         <p>
           You’ve reached my little corner of the web: no dark patterns, no infinite scroll,
-          just text, links, and a touch of retro terminal glow.
+          just text, links, and a terminal-style glow.
         </p>
         <p>You’ll find my writing, experiments, and various obsessions split across a couple of places:</p>
         <ul>
@@ -220,7 +214,7 @@
         </ul>
         <p>
           Want the full story? Head over to the
-          <a href="about.html">About page</a> to see what I’m into and what this place is for.
+          <a href="/about.html">About page</a> to see what I’m into and what this place is for.
         </p>
       </div>
     </div>
@@ -233,7 +227,7 @@
       <div class="box-body">
         &raquo; <a href="https://blog.njorda.net" target="_blank">Blog / Substack</a><br>
         &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a><br>
-        &raquo; <a href="about.html">About Njorda</a><br>
+        &raquo; <a href="/about.html">About Njorda</a><br>
       </div>
     </div>
 
