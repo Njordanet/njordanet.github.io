@@ -3,174 +3,277 @@
 <head>
   <title>Njorda.net Home</title>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #000010;
+      color: #AAFFFF;
+      margin: 0;
+      font-family: Verdana, Arial, sans-serif;
+    }
+
+    a {
+      color: #00FFFF;
+    }
+
+    a:visited {
+      color: #66CCFF;
+    }
+
+    a:active {
+      color: #FFFF00;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .box {
+      border: 1px solid #00CCFF;
+      background-color: #000020;
+      margin-bottom: 12px;
+    }
+
+    .box-header {
+      background-color: #001a33;
+      padding: 10px;
+      text-align: center;
+      color: #CCFFFF;
+    }
+
+    .box-body {
+      padding: 10px;
+    }
+
+    .header-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #66D9FF;
+    }
+
+    .tagline {
+      font-size: 11px;
+      font-style: italic;
+      color: #99EFFF;
+    }
+
+    .marquee-box {
+      border-color: #0088AA;
+      background-color: #001a22;
+    }
+
+    nav {
+      background-color: #001b33;
+      border: 1px solid #00CCFF;
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+      margin-bottom: 12px;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+
+    nav a {
+      text-decoration: none;
+      padding: 0 4px;
+    }
+
+    nav span {
+      color: #66CCFF;
+    }
+
+    h2 {
+      color: #66D9FF;
+      font-size: 20px;
+      margin: 0 0 8px 0;
+    }
+
+    h3 {
+      color: #99EFFF;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+
+    ul {
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      font-size: 10px;
+      text-align: center;
+      color: #66CCFF;
+      border: 1px solid #00CCFF;
+      background-color: #000020;
+      padding: 8px;
+      margin-top: 16px;
+    }
+
+    .under-construction {
+      font-family: "Courier New", monospace;
+      text-align: center;
+      background-color: #001a22;
+      border: 1px dashed #0088AA;
+      padding: 8px;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+  </style>
 </head>
-<body bgcolor="#000000" text="#00FF00" link="#00FFFF" vlink="#FF00FF" alink="#FFFF00">
+<body>
 
-  <!-- Page wrapper -->
-  <center>
-    <table width="760" cellpadding="0" cellspacing="0" border="0">
-      <tr>
-        <td>
+  <div class="page">
 
-          <!-- Header -->
-          <table width="100%" cellpadding="10" cellspacing="0" border="1" bordercolor="#00FF00">
-            <tr bgcolor="#000033">
-              <td align="center">
-                <font face="Verdana, Arial, sans-serif" size="6"><b>njorda.net</b></font><br>
-                <font face="Verdana, Arial, sans-serif" size="2">
-                  <i>Welcome to my little corner of the internet where I share the random things I’m into: personal projects, hobbies, food, travels, thoughts, opinions, and the occasional product review. It’s a mix, and that’s the fun of it.</i>
-                </font>
-              </td>
-            </tr>
-          </table>
+    <!-- Header -->
+    <div class="box">
+      <div class="box-header">
+        <div class="header-title">njorda.net</div>
+        <div class="tagline">
+          A small, personal site — writing, projects, hobbies, and experiments on the web.
+        </div>
+      </div>
+    </div>
 
-          <!-- Marquee -->
-          <table width="100%" cellpadding="5" cellspacing="0" border="1" bordercolor="#006600">
-            <tr bgcolor="#001100">
-              <td>
-                <marquee behavior="scroll" direction="left" scrollamount="4">
-                  Welcome to njorda.net &bull; Running, recreation, technology, and various experiments on the web &bull; Hosted at njorda.net
-                </marquee>
-              </td>
-            </tr>
-          </table>
+    <!-- Marquee -->
+    <div class="box marquee-box">
+      <div class="box-body">
+        <marquee behavior="scroll" direction="left" scrollamount="4">
+          Welcome to njorda.net • Running, recreation, technology, and various experiments on the web • Hosted at njorda.net
+        </marquee>
+      </div>
+    </div>
 
-          <!-- Navigation -->
-          <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#00CCFF">
-            <tr bgcolor="#000033">
-              <td align="center">
-                <font face="Verdana, Arial, sans-serif" size="2">
-                  [ <a href="index.html">Home</a> ]
-                  [ <a href="https://njordanet.substack.com">Blog</a> ]
-                  [ <a href="#about">About</a> ]
-                  [ <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a> ]
-                </font>
-              </td>
-            </tr>
-          </table>
+    <!-- Navigation -->
+    <nav>
+      <span>[</span> <a href="index.html">Home</a> <span>]</span>
+      <span>[</span> <a href="https://blog.njorda.net">Blog</a> <span>]</span>
+      <span>[</span> <a href="#about">About</a> <span>]</span>
+      <span>[</span> <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a> <span>]</span>
+    </nav>
 
-          <br>
+    <!-- Welcome -->
+    <div class="box">
+      <div class="box-header">
+        <h2>Welcome to Njorda.net</h2>
+      </div>
+      <div class="box-body">
+        This is my little corner of the old-school web. No dark patterns, no infinite scroll,
+        just a simple page and some links.
+        <br><br>
+        You’ll find my writing, experiments, and various obsessions split across a couple of places:
+        <ul>
+          <li><b>Blog:</b> long-form posts live at
+            <a href="https://blog.njorda.net">blog.njorda.net</a>
+          </li>
+          <li><b>Bluesky:</b> stray thoughts, links, and whatever I’m currently poking at</li>
+        </ul>
+        Bookmark this page if you want a simple hub for everything Njorda-related.
+      </div>
+    </div>
 
-          <!-- Main content layout -->
-          <table width="100%" cellpadding="10" cellspacing="0" border="0">
-            <tr valign="top">
-              <!-- Left column: welcome -->
-              <td width="65%">
-                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#00FF00">
-                  <tr bgcolor="#001100">
-                    <td>
-                      <font face="Verdana, Arial, sans-serif" size="4"><b>Welcome to Njorda.net</b></font>
-                    </td>
-                  </tr>
-                  <tr bgcolor="#000000">
-                    <td>
-                      <font face="Verdana, Arial, sans-serif" size="2">
-                        This is my little corner of the old-school web. No dark patterns, no infinite scroll,
-                        just a simple page and some links.
-                        <br><br>
-                        You’ll find my writing, experiments, and various obsessions split across a couple of places:
-                        <ul>
-                          <li><b>Blog:</b> long-form posts live at <a href="https://njordanet.substack.com">blog.njorda.net</a></li>
-                          <li><b>Bluesky:</b> stray thoughts, links, and whatever I’m currently poking at</li>
-                        </ul>
-                        Bookmark this page if you want a simple hub for everything Njorda-related.
-                      </font>
-                    </td>
-                  </tr>
-                </table>
+    <!-- About -->
+    <a name="about"></a>
+    <div class="box">
+      <div class="box-header">
+        <h2>About</h2>
+      </div>
+      <div class="box-body">
+        <h3>Njorda's Notebook</h3>
+        <p><b>Hey, I’m Nick</b></p>
+        <p><b>Nick Jordan</b><br><i>October 17, 2025</i></p>
 
-                <br>
+        <p>
+          Welcome to my little corner of the internet where I share the random things I’m into:
+          personal projects, hobbies, food, travels, thoughts, opinions, and the occasional product review.
+          It’s a mix, and that’s the fun of it.
+        </p>
 
-                <!-- About section -->
-                <a name="about"></a>
-                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#00CCFF">
-                  <tr bgcolor="#000033">
-                    <td>
-                      <font face="Verdana, Arial, sans-serif" size="4"><b>About</b></font>
-                    </td>
-                  </tr>
-                  <tr bgcolor="#000000">
-                    <td>
-                      <font face="Verdana, Arial, sans-serif" size="2">
-                        <b>Running and recreation.</b> I log miles, chase race PRs, and generally use running as an excuse
-                        to explore places and clear my head.
-                        <br><br>
-                        <b>Technology and techno.</b> I grew up as a full-on consumer tech nerd and never really stopped.
-                        There’s usually a new gadget, app, or strange workflow on my desk. Somewhere in the background,
-                        there’s probably a beat looping.
-                        <br><br>
-                        <b>I write things and take bad pictures and post them online.</b> Essays, notes, and half-baked
-                        ideas tend to land on the blog or Substack. Photos, screenshots, and other ephemeral bits get
-                        scattered across the internet, but this page stays the home base.
-                        <br><br>
-                        If any of that sounds interesting, head over to the
-                        <a href="https://blog.njorda.net">blog</a> or find me on
-                        <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a>.
-                      </font>
-                    </td>
-                  </tr>
-                </table>
-              </td>
+        <h3>Work in a nutshell</h3>
+        <p>
+          I’ve worked in marketing and performance analytics since 2015, after graduating from Eastern Michigan University
+          with a dual major in finance and marketing. I spent years on the agency side and, in 2024, moved client-side to
+          Ford Motor Company, focusing on campaign measurement. I love the blend of data, experimentation, and impact.
+        </p>
 
-              <!-- Right column: quick links / sidebar -->
-              <td width="35%">
-                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#6666FF">
-                  <tr bgcolor="#000033">
-                    <td align="center">
-                      <font face="Verdana, Arial, sans-serif" size="3"><b>Quick Links</b></font>
-                    </td>
-                  </tr>
-                  <tr bgcolor="#000000">
-                    <td>
-                      <font face="Verdana, Arial, sans-serif" size="2">
-                        &raquo; <a href="https://njordanet.substack.com" target="_blank">Substack blog</a><br>
-                        &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky profile</a><br>
-                      </font>
-                    </td>
-                  </tr>
-                </table>
+        <h3>My general vibe</h3>
+        <p>
+          I’m a serial hobbyist who takes the 80/20 rule to the limit. I’m a proud jack-of-many-trades and a master of the
+          stuff I do for work. I like learning, tinkering, and building systems that make life a little smoother.
+        </p>
 
-                <br>
+        <h3>Things I’m into</h3>
 
-                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#444444">
-                  <tr bgcolor="#001100">
-                    <td align="center">
-                      <font face="Courier New, monospace" size="2">
-                        <b>[ Under Construction ]</b>
-                      </font>
-                    </td>
-                  </tr>
-                  <tr bgcolor="#000000">
-                    <td>
-                      <font face="Courier New, monospace" size="2">
-                        Check back later for more links, logs, and experiments.
-                      </font>
-                    </td>
-                  </tr>
-                </table>
+        <p><b>Technology:</b> Consumer tech nerd to the fullest. I was installing Linux on laptops at 12 and still have too many gadgets around the house. I binge videos, devour podcasts, and read all the news. Faithful Verge reader. I love retro tech deep dives. Software and hardware? Yes.</p>
 
-              </td>
-            </tr>
-          </table>
+        <p><b>Productivity:</b> Forever tweaking systems. Lists, databases, automation, AI, smart tools… the process is the point now, not just the outcome.</p>
 
-          <br>
+        <p><b>Running:</b> Track and cross-country in high school turned into half and full marathons as an adult.</p>
 
-          <!-- Footer -->
-          <table width="100%" cellpadding="5" cellspacing="0" border="1" bordercolor="#00FF00">
-            <tr bgcolor="#000033">
-              <td align="center">
-                <font face="Verdana, Arial, sans-serif" size="1">
-                  &copy; <script>document.write(new Date().getFullYear());</script> njorda.net<br>
-                  Best viewed on a beige CRT monitor at 800x600.
-                </font>
-              </td>
-            </tr>
-          </table>
+        <p><b>Strength training:</b> When I’m not training for a race, I’m in the basement lifting barbells and dumbbells.
+        Your body is like a 401k—invest in muscle now for later, inspired by Jordan at Barbell Medicine.</p>
 
-        </td>
-      </tr>
-    </table>
-  </center>
+        <p><b>Sports:</b> NFL: New England Patriots and Detroit Lions. College: Michigan Wolverines and Eastern Michigan Eagles.
+        Family affiliations explain the split loyalties.</p>
+
+        <p><b>Writing:</b> I always have a writing project. Blogs, satire, journals—you name it, I’ve dabbled. Am I good?
+        Doesn’t matter. It’s fun.</p>
+
+        <p><b>Gaming:</b> Not “a gamer,” but I play games. PC with Steam, lots of Guild Wars 2, plus retro on the Retroid Pocket
+        and Miyoo Mini+. More into RPGs than twitchy FPS.</p>
+
+        <p><b>Food & drinks:</b> I eat everything and love trying new cuisines while traveling. At home, I make pizza and bread
+        and lean toward savory bakes.</p>
+
+        <p><b>Outdoors:</b> Hiking, camping, fishing, kayaking, swimming, biking, backpacking. If it’s outside, I’m game.</p>
+
+        <p><b>Music:</b> A lot of electronic: House and Techno. Also alt rock, indie, indie pop, and dream pop.</p>
+
+        <p><b>Travel:</b> My wife and I aim for at least one international trip a year, plus lots of U.S. trips.
+        Favorites: Japan, Iceland, Costa Rica.</p>
+
+        <p><b>Movies:</b> Sci-fi, drama, comedy. All-time favorites include Blade Runner (both), Dune (the new ones),
+        and Star Wars.</p>
+
+        <p><b>Photography:</b> Long-time interest that clicked in 2025 when I picked up a Fujifilm X-T30 II and a couple lenses.
+        After many books, videos, and practice hours, I now take slightly less bad photos—and love the process.</p>
+
+        <p><b>Skiing:</b> I live in flat Michigan but chase mountains with an Ikon pass when I can, out West or up to Boyne.
+        I actually got back into running to build ski fitness.</p>
+
+        <h3>Why I write here</h3>
+        <p>
+          This site is a home base for documenting, thinking out loud, and sharing what I learn.
+          If any of it helps or entertains, even better. If not, I still had fun making it.
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="box">
+      <div class="box-header">
+        <h2>Quick Links</h2>
+      </div>
+      <div class="box-body">
+        &raquo; <a href="https://blog.njorda.net" target="_blank">Blog / Substack</a><br>
+        &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky Profile</a><br>
+      </div>
+    </div>
+
+    <!-- Under Construction -->
+    <div class="under-construction">
+      <b>[ Under Construction ]</b><br>
+      Check back later for more links, logs, and experiments.
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      &copy; <script>document.write(new Date().getFullYear());</script> njorda.net<br>
+      Best viewed on a slightly buzzing CRT at 800x600.
+    </div>
+
+  </div>
 
 </body>
 </html>
