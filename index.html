@@ -5,42 +5,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* Base theme */
     body {
-      background-color: #000010;
-      color: #AAFFFF;
+      background-color: #000000;
+      color: #00FF99;
       margin: 0;
-      font-family: Verdana, Arial, sans-serif;
+      font-family: "Courier New", monospace;
+      text-shadow: 0 0 3px #00FF99, 0 0 10px #00FF99;
+      background-image: repeating-linear-gradient(
+        rgba(0, 255, 100, 0.02) 0px,
+        rgba(0, 0, 0, 0.15) 2px
+      );
+      background-size: 100% 4px;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="4" fill="%2300ff99" stroke="%2300ff99" stroke-width="2" /></svg>') 4 4, crosshair;
     }
 
     a {
       color: #00FFFF;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="4" fill="%2300ffff" stroke="%2300ffff" stroke-width="2" /></svg>') 4 4, crosshair;
     }
 
-    a:visited {
-      color: #66CCFF;
-    }
-
-    a:active {
-      color: #FFFF00;
+    a:hover {
+      color: #FFFF66;
+      text-shadow: 0 0 10px #FFFF66, 0 0 20px #FFFF66;
+      transform: scale(1.02);
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="5" fill="%23ffff66" stroke="%23ffff66" stroke-width="2" /></svg>') 4 4, crosshair;
     }
 
     .page {
-      max-width: 760px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 10px;
     }
 
     .box {
-      border: 1px solid #00CCFF;
-      background-color: #000020;
-      margin-bottom: 12px;
+      border: 1px solid #00FF99;
+      background-color: #000010;
+      margin-bottom: 14px;
+      box-shadow: 0 0 8px #00FF66;
     }
 
     .box-header {
-      background-color: #001a33;
+      background-color: #001a00;
       padding: 10px;
       text-align: center;
-      color: #CCFFFF;
+      color: #00FF99;
+      border-bottom: 1px solid #00FF99;
     }
 
     .box-body {
@@ -50,75 +62,93 @@
     .header-title {
       font-size: 32px;
       font-weight: bold;
-      color: #66D9FF;
+      color: #00FF99;
+      text-shadow: 0 0 8px #00FF99, 0 0 20px #00FF66;
+      letter-spacing: 1px;
     }
 
     .tagline {
-      font-size: 11px;
+      font-size: 12px;
       font-style: italic;
-      color: #99EFFF;
+      color: #33FFAA;
     }
 
     .marquee-box {
-      border-color: #0088AA;
-      background-color: #001a22;
+      border-color: #00FF99;
+      background-color: #001100;
+    }
+
+    marquee {
+      color: #00FF99;
     }
 
     nav {
-      background-color: #001b33;
-      border: 1px solid #00CCFF;
+      background-color: #001100;
+      border: 1px solid #00FF99;
       text-align: center;
       padding: 8px;
       font-size: 12px;
       margin-bottom: 12px;
-      white-space: nowrap;
-      overflow-x: auto;
     }
 
     nav a {
-      text-decoration: none;
-      padding: 0 4px;
-    }
-
-    nav span {
-      color: #66CCFF;
+      color: #00FF99;
+      text-shadow: 0 0 5px #00FF99;
+      padding: 0 6px;
     }
 
     h2 {
-      color: #66D9FF;
+      color: #00FF99;
       font-size: 20px;
       margin: 0 0 8px 0;
+      text-shadow: 0 0 10px #00FF99;
     }
 
     h3 {
-      color: #99EFFF;
+      color: #33FFAA;
       margin-top: 12px;
       margin-bottom: 4px;
     }
 
-    ul {
-      margin-top: 4px;
-      margin-bottom: 4px;
+    p, li {
+      line-height: 1.5em;
     }
 
     .footer {
-      font-size: 10px;
+      font-size: 11px;
       text-align: center;
-      color: #66CCFF;
-      border: 1px solid #00CCFF;
-      background-color: #000020;
+      color: #00FF99;
+      border: 1px solid #00FF99;
+      background-color: #001100;
       padding: 8px;
       margin-top: 16px;
     }
 
     .under-construction {
-      font-family: "Courier New", monospace;
       text-align: center;
-      background-color: #001a22;
-      border: 1px dashed #0088AA;
+      border: 1px dashed #00FF66;
+      background-color: #000800;
       padding: 8px;
       font-size: 11px;
-      margin-bottom: 12px;
+      color: #00FF99;
+      text-shadow: 0 0 6px #00FF99;
+    }
+
+    .flicker {
+      animation: flicker 2s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.3;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .header-title { font-size: 26px; }
     }
   </style>
 </head>
@@ -129,9 +159,9 @@
     <!-- Header -->
     <div class="box">
       <div class="box-header">
-        <div class="header-title">njorda.net</div>
+        <div class="header-title flicker">njorda.net</div>
         <div class="tagline">
-          A small, personal site — writing, projects, hobbies, and experiments on the web.
+          <i>system.online // personal.log initialized</i>
         </div>
       </div>
     </div>
@@ -140,36 +170,36 @@
     <div class="box marquee-box">
       <div class="box-body">
         <marquee behavior="scroll" direction="left" scrollamount="4">
-          Welcome to njorda.net • Running, recreation, technology, and various experiments on the web • Hosted at njorda.net
+          >>> ACCESS GRANTED • Welcome to njorda.net • Running | Tech | Writing | Experiments
         </marquee>
       </div>
     </div>
 
     <!-- Navigation -->
     <nav>
-      <span>[</span> <a href="index.html">Home</a> <span>]</span>
-      <span>[</span> <a href="https://blog.njorda.net">Blog</a> <span>]</span>
-      <span>[</span> <a href="#about">About</a> <span>]</span>
-      <span>[</span> <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a> <span>]</span>
+      [ <a href="index.html">Home</a> ]
+      [ <a href="https://blog.njorda.net">Blog</a> ]
+      [ <a href="#about">About</a> ]
+      [ <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a> ]
     </nav>
 
     <!-- Welcome -->
     <div class="box">
       <div class="box-header">
-        <h2>Welcome to Njorda.net</h2>
+        <h2>&gt; Welcome to Njorda.net</h2>
       </div>
       <div class="box-body">
-        This is my little corner of the old-school web. No dark patterns, no infinite scroll,
-        just a simple page and some links.
-        <br><br>
-        You’ll find my writing, experiments, and various obsessions split across a couple of places:
+        <p>
+          You’ve reached my little corner of the web — no dark patterns, no infinite scroll,
+          just text, links, and a touch of retro code glow.
+        </p>
+        <p>
+          You’ll find my writing, experiments, and various obsessions split across a couple of places:
+        </p>
         <ul>
-          <li><b>Blog:</b> long-form posts live at
-            <a href="https://blog.njorda.net">blog.njorda.net</a>
-          </li>
+          <li><b>Blog:</b> long-form posts live at <a href="https://blog.njorda.net">blog.njorda.net</a></li>
           <li><b>Bluesky:</b> stray thoughts, links, and whatever I’m currently poking at</li>
         </ul>
-        Bookmark this page if you want a simple hub for everything Njorda-related.
       </div>
     </div>
 
@@ -177,7 +207,7 @@
     <a name="about"></a>
     <div class="box">
       <div class="box-header">
-        <h2>About</h2>
+        <h2>&gt; About</h2>
       </div>
       <div class="box-body">
         <h3>Njorda's Notebook</h3>
@@ -204,48 +234,25 @@
         </p>
 
         <h3>Things I’m into</h3>
-
-        <p><b>Technology:</b> Consumer tech nerd to the fullest. I was installing Linux on laptops at 12 and still have too many gadgets around the house. I binge videos, devour podcasts, and read all the news. Faithful Verge reader. I love retro tech deep dives. Software and hardware? Yes.</p>
-
-        <p><b>Productivity:</b> Forever tweaking systems. Lists, databases, automation, AI, smart tools… the process is the point now, not just the outcome.</p>
-
-        <p><b>Running:</b> Track and cross-country in high school turned into half and full marathons as an adult.</p>
-
-        <p><b>Strength training:</b> When I’m not training for a race, I’m in the basement lifting barbells and dumbbells.
-        Your body is like a 401k—invest in muscle now for later, inspired by Jordan at Barbell Medicine.</p>
-
-        <p><b>Sports:</b> NFL: New England Patriots and Detroit Lions. College: Michigan Wolverines and Eastern Michigan Eagles.
-        Family affiliations explain the split loyalties.</p>
-
-        <p><b>Writing:</b> I always have a writing project. Blogs, satire, journals—you name it, I’ve dabbled. Am I good?
-        Doesn’t matter. It’s fun.</p>
-
-        <p><b>Gaming:</b> Not “a gamer,” but I play games. PC with Steam, lots of Guild Wars 2, plus retro on the Retroid Pocket
-        and Miyoo Mini+. More into RPGs than twitchy FPS.</p>
-
-        <p><b>Food & drinks:</b> I eat everything and love trying new cuisines while traveling. At home, I make pizza and bread
-        and lean toward savory bakes.</p>
-
-        <p><b>Outdoors:</b> Hiking, camping, fishing, kayaking, swimming, biking, backpacking. If it’s outside, I’m game.</p>
-
-        <p><b>Music:</b> A lot of electronic: House and Techno. Also alt rock, indie, indie pop, and dream pop.</p>
-
-        <p><b>Travel:</b> My wife and I aim for at least one international trip a year, plus lots of U.S. trips.
-        Favorites: Japan, Iceland, Costa Rica.</p>
-
-        <p><b>Movies:</b> Sci-fi, drama, comedy. All-time favorites include Blade Runner (both), Dune (the new ones),
-        and Star Wars.</p>
-
-        <p><b>Photography:</b> Long-time interest that clicked in 2025 when I picked up a Fujifilm X-T30 II and a couple lenses.
-        After many books, videos, and practice hours, I now take slightly less bad photos—and love the process.</p>
-
-        <p><b>Skiing:</b> I live in flat Michigan but chase mountains with an Ikon pass when I can, out West or up to Boyne.
-        I actually got back into running to build ski fitness.</p>
+        <p><b>Technology:</b> Consumer tech nerd to the fullest. Retro deep dives, gadgets, software, all of it.</p>
+        <p><b>Productivity:</b> Forever tweaking systems. Lists, databases, automation, AI — process over outcome.</p>
+        <p><b>Running:</b> Track and cross-country turned half and full marathons.</p>
+        <p><b>Strength training:</b> Your body’s a 401k. Invest early, lift often.</p>
+        <p><b>Sports:</b> NFL: Patriots + Lions. College: Michigan + EMU.</p>
+        <p><b>Writing:</b> Blogs, satire, journals — skill optional, fun required.</p>
+        <p><b>Gaming:</b> PC + retro. Guild Wars 2 and RPGs > FPS.</p>
+        <p><b>Food & drinks:</b> Pizza, bread, savory bakes. Try everything.</p>
+        <p><b>Outdoors:</b> Hiking, biking, camping, kayaking.</p>
+        <p><b>Music:</b> Techno, house, alt, indie, dream pop.</p>
+        <p><b>Travel:</b> Japan, Iceland, Costa Rica — favorites so far.</p>
+        <p><b>Movies:</b> Sci-fi, drama, comedy. Blade Runner, Dune, Star Wars.</p>
+        <p><b>Photography:</b> Fujifilm X-T30 II. Slightly less bad photos.</p>
+        <p><b>Skiing:</b> Michigan hills, Ikon Pass dreams.</p>
 
         <h3>Why I write here</h3>
         <p>
-          This site is a home base for documenting, thinking out loud, and sharing what I learn.
-          If any of it helps or entertains, even better. If not, I still had fun making it.
+          This site is my home base for documenting, thinking out loud, and sharing what I learn.
+          If it helps or entertains, cool. If not — it still glows green.
         </p>
       </div>
     </div>
@@ -253,24 +260,23 @@
     <!-- Quick Links -->
     <div class="box">
       <div class="box-header">
-        <h2>Quick Links</h2>
+        <h2>&gt; Quick Links</h2>
       </div>
       <div class="box-body">
         &raquo; <a href="https://blog.njorda.net" target="_blank">Blog / Substack</a><br>
-        &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky Profile</a><br>
+        &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a><br>
       </div>
     </div>
 
     <!-- Under Construction -->
     <div class="under-construction">
-      <b>[ Under Construction ]</b><br>
-      Check back later for more links, logs, and experiments.
+      [ SYSTEM LOG ] Under construction… more logs loading soon.
     </div>
 
     <!-- Footer -->
     <div class="footer">
       &copy; <script>document.write(new Date().getFullYear());</script> njorda.net<br>
-      Best viewed on a slightly buzzing CRT at 800x600.
+      Booted successfully — best viewed on a CRT terminal at 800x600.
     </div>
 
   </div>
