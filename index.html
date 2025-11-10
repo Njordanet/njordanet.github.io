@@ -1,90 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+  <title>Njorda.net Home</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Njorda’s Notebook</title>
-  <meta name="description" content="The personal site of Njorda — tech, writing, running, and life in Ann Arbor.">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <style>
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      margin: 0;
-      background: #f8f9fa;
-      color: #222;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      background: #0a0a0a;
-      color: white;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      letter-spacing: 1px;
-    }
-    nav {
-      background: #111;
-      padding: 0.5rem 0;
-      text-align: center;
-    }
-    nav a {
-      color: #ddd;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-weight: 500;
-    }
-    nav a:hover {
-      color: #fff;
-    }
-    main {
-      flex: 1;
-      padding: 2rem 1rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    footer {
-      background: #0a0a0a;
-      color: #ccc;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-    }
-  </style>
 </head>
-<body>
-  <header>
-    <h1>Njorda’s Notebook</h1>
-    <p>Notes, projects, and ideas from Ann Arbor</p>
-  </header>
+<body bgcolor="#000000" text="#00FF00" link="#00FFFF" vlink="#FF00FF" alink="#FFFF00">
 
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Blog</a>
-    <a href="#">About</a>
-    <a href="#">Contact</a>
-  </nav>
+  <!-- Page wrapper -->
+  <center>
+    <table width="760" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td>
 
-  <main>
-    <h2>Welcome</h2>
-    <p>This is my personal site — a place to share writing, tech experiments, and the occasional running log. I build tools, test ideas, and document the process along the way.</p>
+          <!-- Header -->
+          <table width="100%" cellpadding="10" cellspacing="0" border="1" bordercolor="#00FF00">
+            <tr bgcolor="#000033">
+              <td align="center">
+                <font face="Verdana, Arial, sans-serif" size="6"><b>Njorda's Notebook</b></font><br>
+                <font face="Verdana, Arial, sans-serif" size="2">
+                  <i>Running and recreation. Technology and techno. I write things and take bad pictures and post them online.</i>
+                </font>
+              </td>
+            </tr>
+          </table>
 
-    <p>If you’re here from Bluesky, Substack, or GitHub, you’ll find updates and links collected here soon.</p>
+          <!-- Marquee -->
+          <table width="100%" cellpadding="5" cellspacing="0" border="1" bordercolor="#006600">
+            <tr bgcolor="#001100">
+              <td>
+                <marquee behavior="scroll" direction="left" scrollamount="4">
+                  Welcome to Njorda's Notebook &bull; Running, recreation, technology, techno, and various experiments on the web &bull; Hosted at Njorda.net
+                </marquee>
+              </td>
+            </tr>
+          </table>
 
-    <p>Thanks for stopping by.</p>
-  </main>
+          <!-- Navigation -->
+          <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#00CCFF">
+            <tr bgcolor="#000033">
+              <td align="center">
+                <font face="Verdana, Arial, sans-serif" size="2">
+                  [ <a href="index.html">Home</a> ]
+                  [ <a href="https://blog.njorda.net">Blog</a> ]
+                  [ <a href="#about">About</a> ]
+                  [ <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a> ]
+                </font>
+              </td>
+            </tr>
+          </table>
 
-  <footer>
-    © <span id="year"></span> Njorda.net — All rights reserved.
-  </footer>
+          <br>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+          <!-- Main content layout -->
+          <table width="100%" cellpadding="10" cellspacing="0" border="0">
+            <tr valign="top">
+              <!-- Left column: welcome -->
+              <td width="65%">
+                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#00FF00">
+                  <tr bgcolor="#001100">
+                    <td>
+                      <font face="Verdana, Arial, sans-serif" size="4"><b>Welcome to Njorda.net</b></font>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#000000">
+                    <td>
+                      <font face="Verdana, Arial, sans-serif" size="2">
+                        This is my little corner of the old-school web. No dark patterns, no infinite scroll,
+                        just a simple page and some links.
+                        <br><br>
+                        You’ll find my writing, experiments, and various obsessions split across a couple of places:
+                        <ul>
+                          <li><b>Blog:</b> long-form posts live at <a href="https://blog.njorda.net">blog.njorda.net</a></li>
+                          <li><b>Substack:</b> running, recreation, tech, and other notes</li>
+                          <li><b>Bluesky:</b> stray thoughts, links, and whatever I’m currently poking at</li>
+                        </ul>
+                        Bookmark this page if you want a simple hub for everything Njorda-related.
+                      </font>
+                    </td>
+                  </tr>
+                </table>
+
+                <br>
+
+                <!-- About section -->
+                <a name="about"></a>
+                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#00CCFF">
+                  <tr bgcolor="#000033">
+                    <td>
+                      <font face="Verdana, Arial, sans-serif" size="4"><b>About</b></font>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#000000">
+                    <td>
+                      <font face="Verdana, Arial, sans-serif" size="2">
+                        <b>Running and recreation.</b> I log miles, chase race PRs, and generally use running as an excuse
+                        to explore places and clear my head.
+                        <br><br>
+                        <b>Technology and techno.</b> I grew up as a full-on consumer tech nerd and never really stopped.
+                        There’s usually a new gadget, app, or strange workflow on my desk. Somewhere in the background,
+                        there’s probably a beat looping.
+                        <br><br>
+                        <b>I write things and take bad pictures and post them online.</b> Essays, notes, and half-baked
+                        ideas tend to land on the blog or Substack. Photos, screenshots, and other ephemeral bits get
+                        scattered across the internet, but this page stays the home base.
+                        <br><br>
+                        If any of that sounds interesting, head over to the
+                        <a href="https://blog.njorda.net">blog</a> or find me on
+                        <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky</a>.
+                      </font>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+
+              <!-- Right column: quick links / sidebar -->
+              <td width="35%">
+                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#6666FF">
+                  <tr bgcolor="#000033">
+                    <td align="center">
+                      <font face="Verdana, Arial, sans-serif" size="3"><b>Quick Links</b></font>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#000000">
+                    <td>
+                      <font face="Verdana, Arial, sans-serif" size="2">
+                        &raquo; <a href="https://blog.njorda.net">Blog at blog.njorda.net</a><br>
+                        &raquo; <a href="https://njordanet.substack.com" target="_blank">Substack</a><br>
+                        &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">Bluesky profile</a><br>
+                      </font>
+                    </td>
+                  </tr>
+                </table>
+
+                <br>
+
+                <table width="100%" cellpadding="8" cellspacing="0" border="1" bordercolor="#444444">
+                  <tr bgcolor="#001100">
+                    <td align="center">
+                      <font face="Courier New, monospace" size="2">
+                        <b>[ Under Construction ]</b>
+                      </font>
+                    </td>
+                  </tr>
+                  <tr bgcolor="#000000">
+                    <td>
+                      <font face="Courier New, monospace" size="2">
+                        Check back later for more links, logs, and experiments.
+                      </font>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>
+          </table>
+
+          <br>
+
+          <!-- Footer -->
+          <table width="100%" cellpadding="5" cellspacing="0" border="1" bordercolor="#00FF00">
+            <tr bgcolor="#000033">
+              <td align="center">
+                <font face="Verdana, Arial, sans-serif" size="1">
+                  &copy; <script>document.write(new Date().getFullYear());</script> Njorda.net<br>
+                  Best viewed on a beige CRT monitor at 800x600.
+                </font>
+              </td>
+            </tr>
+          </table>
+
+        </td>
+      </tr>
+    </table>
+  </center>
+
 </body>
 </html>
