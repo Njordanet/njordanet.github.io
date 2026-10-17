@@ -1,6 +1,7 @@
 /* ==========================================================================
    njorda.net — Cozy Claude & Natural Vibes Theme
    Warm paper & hearth tones, refined editorial typography, soft organic cards
+   Accented with light field-notebook details & subtle woven flannel
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
@@ -20,6 +21,13 @@
   --card-shadow: 0 4px 14px rgba(50, 40, 30, 0.04), 0 1px 3px rgba(50, 40, 30, 0.02);
   --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  /* Light Flannel Accent Colors */
+  --flannel-c1: rgba(217, 119, 87, 0.42);
+  --flannel-c2: rgba(80, 113, 87, 0.32);
+  --flannel-c3: rgba(217, 119, 87, 0.18);
+  --notebook-margin: rgba(217, 119, 87, 0.25);
+  --dot-grid-color: #DED7CB;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,6 +44,12 @@
     --accent-sage: #7BA083;
     --badge-bg: #332B25;
     --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    
+    --flannel-c1: rgba(224, 130, 100, 0.45);
+    --flannel-c2: rgba(123, 160, 131, 0.35);
+    --flannel-c3: rgba(224, 130, 100, 0.2);
+    --notebook-margin: rgba(224, 130, 100, 0.3);
+    --dot-grid-color: #38322B;
   }
 }
 
@@ -90,7 +104,26 @@ a:hover {
   margin-bottom: 16px;
   box-shadow: var(--card-shadow);
   overflow: hidden;
+  position: relative;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Subtle Woven Flannel Ribbon on Top Header Card */
+.box:first-of-type::before {
+  content: "";
+  display: block;
+  height: 5px;
+  width: 100%;
+  background: 
+    repeating-linear-gradient(90deg, 
+      var(--flannel-c1) 0px, var(--flannel-c1) 10px,
+      transparent 10px, transparent 20px,
+      var(--flannel-c2) 20px, var(--flannel-c2) 30px,
+      transparent 30px, transparent 40px),
+    repeating-linear-gradient(0deg,
+      var(--flannel-c3) 0px, var(--flannel-c3) 10px,
+      var(--flannel-c2) 10px, var(--flannel-c2) 20px);
+  background-size: 40px 40px;
 }
 
 .box-header {
@@ -99,8 +132,12 @@ a:hover {
   border-bottom: 1px solid var(--border-soft);
 }
 
+/* Notebook margin accent on the left of content body */
 .box-body {
   padding: 20px 22px;
+  border-left: 2px solid var(--notebook-margin);
+  margin-left: 6px;
+  padding-left: 18px;
 }
 
 /* Header & Titles */
@@ -122,15 +159,21 @@ a:hover {
   text-align: center;
 }
 
-/* Marquee / Ticker */
+/* Marquee / Ticker with faint woven texture */
 .marquee-box {
   background-color: var(--bg-subtle);
   border-color: var(--border-soft);
   margin-bottom: 16px;
+  background-image: 
+    linear-gradient(90deg, rgba(217, 119, 87, 0.03) 50%, transparent 50%),
+    linear-gradient(rgba(80, 113, 87, 0.03) 50%, transparent 50%);
+  background-size: 20px 20px;
 }
 
 .marquee-box .box-body {
   padding: 8px 16px;
+  border-left: none;
+  margin-left: 0;
 }
 
 marquee {
@@ -182,13 +225,16 @@ h2 {
   letter-spacing: -0.01em;
 }
 
+/* Subheadings with subtle stitched notebook ruling */
 h3 {
   font-family: var(--font-serif);
   font-size: 17px;
   font-weight: 600;
   color: var(--accent-terracotta);
-  margin-top: 22px;
-  margin-bottom: 8px;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed var(--border-soft);
 }
 
 /* Lists and paragraphs */
@@ -212,13 +258,16 @@ li b {
   color: var(--text-main);
 }
 
-/* Status & Construction Badges */
+/* Field Notebook Status & Construction Badges (Dotted Grid Paper) */
 .under-construction {
   text-align: center;
   background-color: var(--bg-subtle);
-  border: 1px dashed var(--border-soft);
+  background-image: radial-gradient(var(--dot-grid-color) 1.2px, transparent 1.2px);
+  background-size: 14px 14px;
+  border: 1px solid var(--border-soft);
+  border-left: 3px solid var(--accent-terracotta);
   border-radius: 12px;
-  padding: 12px 18px;
+  padding: 14px 18px;
   font-size: 12px;
   color: var(--text-muted);
   font-style: italic;
@@ -239,7 +288,7 @@ li b {
   box-shadow: var(--card-shadow);
 }
 
-/* Subtle gentle pulse rather than harsh glitch flicker */
+/* Subtle gentle pulse */
 .flicker {
   animation: gentlePulse 4s ease-in-out infinite;
 }
@@ -256,6 +305,10 @@ li b {
   }
   .box-header, .box-body {
     padding: 16px;
+  }
+  .box-body {
+    margin-left: 2px;
+    padding-left: 14px;
   }
   .header-title {
     font-size: 28px;
