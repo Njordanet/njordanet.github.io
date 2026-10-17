@@ -1,155 +1,271 @@
-/* Base theme */
-body {
-  background-color: #000000;
-  color: #00FF66; /* terminal green */
-  margin: 0;
-  font-family: "Courier New", monospace;
-  background-image: repeating-linear-gradient(
-    rgba(0, 255, 100, 0.02) 0px,
-    rgba(0, 0, 0, 0.15) 2px
-  );
-  background-size: 100% 4px;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="4" fill="%2300ff99" stroke="%2300ff99" stroke-width="2" /></svg>') 4 4, crosshair;
+/* ==========================================================================
+   njorda.net — Cozy Claude & Natural Vibes Theme
+   Warm paper & hearth tones, refined editorial typography, soft organic cards
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --bg-canvas: #FAF7F2;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #F4EFEA;
+  --border-soft: #E8E1D7;
+  --border-focus: #D97757;
+  --text-main: #2C2621;
+  --text-muted: #6B6258;
+  --accent-terracotta: #D97757;
+  --accent-terracotta-hover: #BF5F40;
+  --accent-sage: #507157;
+  --badge-bg: #EFE8DE;
+  --card-shadow: 0 4px 14px rgba(50, 40, 30, 0.04), 0 1px 3px rgba(50, 40, 30, 0.02);
+  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-canvas: #1C1917;
+    --bg-card: #26221E;
+    --bg-subtle: #201C19;
+    --border-soft: #38322B;
+    --border-focus: #E08264;
+    --text-main: #EDE7DF;
+    --text-muted: #A89F93;
+    --accent-terracotta: #E08264;
+    --accent-terracotta-hover: #F09A7F;
+    --accent-sage: #7BA083;
+    --badge-bg: #332B25;
+    --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Base Document */
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Page Container */
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* Links */
 a {
-  color: #33CCFF; /* cyber blue */
+  color: var(--accent-terracotta);
   text-decoration: underline;
-  transition: all 0.2s ease;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="4" fill="%2300ffff" stroke="%2300ffff" stroke-width="2" /></svg>') 4 4, crosshair;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 a:hover {
-  color: #FFFF66;
-  text-shadow: 0 0 10px #FFFF66, 0 0 20px #FFFF66;
-  transform: scale(1.02);
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><circle cx="8" cy="8" r="5" fill="%23ffff66" stroke="%23ffff66" stroke-width="2" /></svg>') 4 4, crosshair;
+  color: var(--accent-terracotta-hover);
+  text-decoration-thickness: 1.5px;
 }
 
-.page {
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 10px;
-}
-
+/* Cards & Content Boxes */
 .box {
-  border: 1px solid #00AEEF; /* cyber blue border */
-  background-color: #000010;
-  margin-bottom: 14px;
-  box-shadow: 0 0 8px #00AEEF;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  margin-bottom: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .box-header {
-  background-color: #001326;
-  padding: 10px;
-  text-align: center;
-  color: #33CCFF;
-  border-bottom: 1px solid #00AEEF;
-  text-shadow: 0 0 10px #33CCFF;
+  background-color: var(--bg-card);
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .box-body {
-  padding: 10px;
+  padding: 20px 22px;
 }
 
+/* Header & Titles */
 .header-title {
+  font-family: var(--font-serif);
   font-size: 32px;
-  font-weight: bold;
-  color: #33CCFF;
-  text-shadow: 0 0 8px #33CCFF, 0 0 20px #00AEEF;
-  letter-spacing: 1px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  text-align: center;
+  margin-bottom: 4px;
 }
 
 .tagline {
-  font-size: 12px;
+  font-family: var(--font-serif);
+  font-size: 13px;
   font-style: italic;
-  color: #66DDFF;
-  text-shadow: 0 0 6px #33CCFF;
+  color: var(--text-muted);
+  text-align: center;
 }
 
+/* Marquee / Ticker */
 .marquee-box {
-  border-color: #00AEEF;
-  background-color: #000818;
+  background-color: var(--bg-subtle);
+  border-color: var(--border-soft);
+  margin-bottom: 16px;
+}
+
+.marquee-box .box-body {
+  padding: 8px 16px;
 }
 
 marquee {
-  color: #33CCFF;
-  text-shadow: 0 0 6px #33CCFF;
+  font-size: 13px;
+  color: var(--accent-sage);
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
+/* Navigation */
 nav {
-  background-color: #000818;
-  border: 1px solid #00AEEF;
-  text-align: center;
-  padding: 8px;
-  font-size: 12px;
-  margin-bottom: 12px;
-  text-shadow: 0 0 6px #33CCFF;
-  white-space: nowrap;
-  overflow-x: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 9999px;
+  padding: 8px 16px;
+  margin-bottom: 18px;
+  box-shadow: var(--card-shadow);
+  font-size: 13px;
+  font-weight: 500;
 }
 
 nav a {
-  color: #33CCFF;
-  padding: 0 6px;
+  display: inline-block;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  transition: all 0.15s ease;
 }
 
+nav a:hover {
+  color: var(--text-main);
+  background-color: var(--bg-subtle);
+  text-decoration: none;
+}
+
+/* Headings */
 h2 {
-  color: #33CCFF;
-  font-size: 20px;
-  margin: 0 0 8px 0;
-  text-shadow: 0 0 10px #33CCFF;
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
 h3 {
-  color: #66DDFF;
-  margin-top: 12px;
-  margin-bottom: 4px;
-  text-shadow: 0 0 8px #33CCFF;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--accent-terracotta);
+  margin-top: 22px;
+  margin-bottom: 8px;
 }
 
-p,
+/* Lists and paragraphs */
+p {
+  margin: 0 0 14px;
+  color: var(--text-main);
+}
+
+ul {
+  margin: 8px 0 16px 20px;
+  padding: 0;
+}
+
 li {
-  line-height: 1.5em;
-  text-shadow: none; /* keep body readable */
+  margin-bottom: 10px;
+  line-height: 1.6;
 }
 
-.footer {
-  font-size: 11px;
-  text-align: center;
-  color: #33CCFF;
-  border: 1px solid #00AEEF;
-  background-color: #000818;
-  padding: 8px;
-  margin-top: 16px;
-  text-shadow: 0 0 6px #33CCFF;
+li b {
+  font-weight: 600;
+  color: var(--text-main);
 }
 
+/* Status & Construction Badges */
 .under-construction {
   text-align: center;
-  border: 1px dashed #00AEEF;
-  background-color: #000010;
-  padding: 8px;
-  font-size: 11px;
-  color: #33CCFF;
-  text-shadow: 0 0 6px #33CCFF;
+  background-color: var(--bg-subtle);
+  border: 1px dashed var(--border-soft);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 16px;
 }
 
+/* Footer */
+.footer {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  text-align: center;
+  color: var(--text-muted);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-top: 24px;
+  box-shadow: var(--card-shadow);
+}
+
+/* Subtle gentle pulse rather than harsh glitch flicker */
 .flicker {
-  animation: flicker 2s infinite;
+  animation: gentlePulse 4s ease-in-out infinite;
 }
 
-@keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-    opacity: 1;
-  }
-  20%, 24%, 55 {
-    opacity: 0.3;
-  }
+@keyframes gentlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.88; }
 }
 
-@media (max-width: 600px) {
+/* Responsive */
+@media (max-width: 640px) {
+  .page {
+    padding: 16px 12px 32px;
+  }
+  .box-header, .box-body {
+    padding: 16px;
+  }
   .header-title {
-    font-size: 26px;
+    font-size: 28px;
+  }
+  nav {
+    border-radius: 16px;
+    gap: 4px;
+  }
+  nav a {
+    padding: 4px 8px;
+    font-size: 12px;
   }
 }
