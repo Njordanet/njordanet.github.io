@@ -1,10 +1,10 @@
 /* ==========================================================================
-   njorda.net — Cozy Claude & Natural Vibes Theme
-   Warm paper & hearth tones, refined editorial typography, soft organic cards
+   njorda.net — Cozy Claude, Typewriter & Natural Vibes Theme
+   Warm paper & hearth tones, cursive handwritten masthead, typewriter body text
    Accented with light field-notebook details & subtle woven flannel
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@600;700&display=swap');
 
 :root {
   --bg-canvas: #FAF7F2;
@@ -19,14 +19,17 @@
   --accent-sage: #507157;
   --badge-bg: #EFE8DE;
   --card-shadow: 0 4px 14px rgba(50, 40, 30, 0.04), 0 1px 3px rgba(50, 40, 30, 0.02);
-  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  /* Typography */
+  --font-masthead: 'Caveat', cursive;
+  --font-typewriter: 'Courier Prime', 'Courier New', Courier, monospace;
+  --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   
   /* Light Flannel Accent Colors */
   --flannel-c1: rgba(217, 119, 87, 0.42);
   --flannel-c2: rgba(80, 113, 87, 0.32);
   --flannel-c3: rgba(217, 119, 87, 0.18);
-  --notebook-margin: rgba(217, 119, 87, 0.25);
+  --notebook-margin: rgba(217, 119, 87, 0.28);
   --dot-grid-color: #DED7CB;
 }
 
@@ -48,7 +51,7 @@
     --flannel-c1: rgba(224, 130, 100, 0.45);
     --flannel-c2: rgba(123, 160, 131, 0.35);
     --flannel-c3: rgba(224, 130, 100, 0.2);
-    --notebook-margin: rgba(224, 130, 100, 0.3);
+    --notebook-margin: rgba(224, 130, 100, 0.35);
     --dot-grid-color: #38322B;
   }
 }
@@ -67,9 +70,9 @@ body {
   color: var(--text-main);
   margin: 0;
   padding: 0;
-  font-family: var(--font-sans);
+  font-family: var(--font-typewriter);
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.25s ease, color 0.25s ease;
@@ -100,8 +103,8 @@ a:hover {
 .box {
   background-color: var(--bg-card);
   border: 1px solid var(--border-soft);
-  border-radius: 14px;
-  margin-bottom: 16px;
+  border-radius: 16px;
+  margin-bottom: 18px;
   box-shadow: var(--card-shadow);
   overflow: hidden;
   position: relative;
@@ -128,42 +131,43 @@ a:hover {
 
 .box-header {
   background-color: var(--bg-card);
-  padding: 18px 22px 14px;
+  padding: 18px 24px 14px;
   border-bottom: 1px solid var(--border-soft);
 }
 
 /* Notebook margin accent on the left of content body */
 .box-body {
-  padding: 20px 22px;
+  padding: 22px 24px;
   border-left: 2px solid var(--notebook-margin);
   margin-left: 6px;
-  padding-left: 18px;
+  padding-left: 20px;
 }
 
-/* Header & Titles */
+/* Handwritten Cursive Masthead */
 .header-title {
-  font-family: var(--font-serif);
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-family: var(--font-masthead);
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
   color: var(--text-main);
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .tagline {
-  font-family: var(--font-serif);
+  font-family: var(--font-typewriter);
   font-size: 13px;
-  font-style: italic;
   color: var(--text-muted);
   text-align: center;
+  letter-spacing: 0.01em;
 }
 
 /* Marquee / Ticker with faint woven texture */
 .marquee-box {
   background-color: var(--bg-subtle);
   border-color: var(--border-soft);
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   background-image: 
     linear-gradient(90deg, rgba(217, 119, 87, 0.03) 50%, transparent 50%),
     linear-gradient(rgba(80, 113, 87, 0.03) 50%, transparent 50%);
@@ -179,8 +183,8 @@ a:hover {
 marquee {
   font-size: 13px;
   color: var(--accent-sage);
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 /* Navigation */
@@ -194,10 +198,10 @@ nav {
   border: 1px solid var(--border-soft);
   border-radius: 9999px;
   padding: 8px 16px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   box-shadow: var(--card-shadow);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 nav a {
@@ -217,24 +221,25 @@ nav a:hover {
 
 /* Headings */
 h2 {
-  font-family: var(--font-serif);
+  font-family: var(--font-heading);
   font-size: 21px;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--text-main);
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 /* Subheadings with subtle stitched notebook ruling */
 h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-heading);
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent-terracotta);
-  margin-top: 24px;
-  margin-bottom: 10px;
+  margin-top: 26px;
+  margin-bottom: 12px;
   padding-bottom: 4px;
   border-bottom: 1px dashed var(--border-soft);
+  letter-spacing: -0.01em;
 }
 
 /* Lists and paragraphs */
@@ -250,11 +255,11 @@ ul {
 
 li {
   margin-bottom: 10px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 li b {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-main);
 }
 
@@ -266,23 +271,22 @@ li b {
   background-size: 14px 14px;
   border: 1px solid var(--border-soft);
   border-left: 3px solid var(--accent-terracotta);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 14px 18px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
-  font-style: italic;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 /* Footer */
 .footer {
-  font-family: var(--font-serif);
-  font-size: 13px;
+  font-family: var(--font-typewriter);
+  font-size: 12px;
   text-align: center;
   color: var(--text-muted);
   background-color: var(--bg-card);
   border: 1px solid var(--border-soft);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 14px 18px;
   margin-top: 24px;
   box-shadow: var(--card-shadow);
@@ -295,7 +299,7 @@ li b {
 
 @keyframes gentlePulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.88; }
+  50% { opacity: 0.92; }
 }
 
 /* Responsive */
@@ -311,7 +315,7 @@ li b {
     padding-left: 14px;
   }
   .header-title {
-    font-size: 28px;
+    font-size: 38px;
   }
   nav {
     border-radius: 16px;
