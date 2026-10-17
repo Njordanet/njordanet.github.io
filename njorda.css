@@ -222,15 +222,17 @@ h4 {
   letter-spacing: -0.01em;
 }
 
-/* Distinct Hobby Cards / List Items */
-.hobbies-grid {
+/* Distinct Hobby & Tech Cards / List Items */
+.hobbies-grid,
+.items-grid {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin: 14px 0;
+  margin: 14px 0 22px;
 }
 
-.hobby-card {
+.hobby-card,
+.item-card {
   background-color: rgba(223, 213, 197, 0.22);
   border: 1px solid var(--border-soft);
   border-left: 3px solid var(--accent-olive);
@@ -239,17 +241,24 @@ h4 {
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.hobby-card:hover {
+.hobby-card:hover,
+.item-card:hover {
   background-color: rgba(223, 213, 197, 0.4);
   border-left-color: var(--accent-brown);
 }
 
-.hobby-card h4 {
+.hobby-card h4,
+.item-card h4 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
   color: var(--accent-olive);
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
 }
 
-.hobby-card p {
+.hobby-card p,
+.item-card p {
   margin: 0;
   font-size: 14px;
   line-height: 1.65;
