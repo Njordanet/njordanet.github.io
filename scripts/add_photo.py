@@ -152,23 +152,10 @@ def render_gallery_html(photos: list):
     """Generate or update gallery.html with the latest photos."""
     cards_html = []
     for idx, p in enumerate(photos):
-        camera = p.get("camera", "")
         location = p.get("location", "")
-        lens = p.get("lens", "")
-        settings = p.get("settings", "")
         thumb = p.get("thumb", "")
-        full = p.get("full", "")
 
-        specs_items = []
-        if camera:
-            specs_items.append(f'<span class="gallery-tag">{camera}</span>')
-        if lens:
-            specs_items.append(f'<span>{lens}</span>')
-        if settings:
-            specs_items.append(f'<span>{settings}</span>')
-
-        specs_html = f'<div class="gallery-specs">{" • ".join(specs_items)}</div>' if specs_items else ""
-        location_html = f'<span class="gallery-location">📍 {location}</span>' if location else ""
+        location_html = f'<span class="gallery-location">{location}</span>' if location else ""
 
         card = f"""      <!-- Photo Card {idx + 1} -->
       <div class="gallery-card" data-index="{idx}">
@@ -177,7 +164,6 @@ def render_gallery_html(photos: list):
         </div>
         <div class="gallery-card-body">
           {location_html}
-          {specs_html}
         </div>
       </div>"""
         cards_html.append(card)
@@ -185,7 +171,7 @@ def render_gallery_html(photos: list):
     cards_block = "\n".join(cards_html)
     json_block = json.dumps(photos, indent=2, ensure_ascii=False)
 
-    count_str = f"{len(photos)} photo" if len(photos) == 1 else f"{len(photos)} photos"
+    count_str = f"{len(photos)} frame" if len(photos) == 1 else f"{len(photos)} frames"
 
     html_content = f"""<!DOCTYPE html>
 <html>
@@ -195,7 +181,7 @@ def render_gallery_html(photos: list):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="njorda.css">
 </head>
-<body>
+<body class="gallery-page">
 
   <div class="page">
 
@@ -220,19 +206,6 @@ def render_gallery_html(photos: list):
       <a href="https://www.linkedin.com/in/jordannicholas" target="_blank">linkedin ↗</a>
     </nav>
 
-    <!-- Main Content -->
-    <div class="box">
-      <div class="box-header">
-        <h2>photo gallery</h2>
-      </div>
-      <div class="box-body">
-        <p>
-          Field frames, backcountry trails, travel snapshots, and everyday moments.
-          Mostly shot on a Fujifilm X-T30 II. Click any photo to expand into the lightbox.
-        </p>
-      </div>
-    </div>
-
     <!-- Gallery Grid -->
     <div class="gallery-grid" id="galleryGrid">
 {cards_block}
@@ -240,7 +213,7 @@ def render_gallery_html(photos: list):
 
     <!-- Field Status -->
     <div class="under-construction">
-      [ PHOTO ARCHIVE ] Actively updated • {count_str} logged
+      [ FIELD ARCHIVE ] Actively updated &bull; {count_str}
     </div>
 
     <!-- Footer -->
@@ -261,7 +234,6 @@ def render_gallery_html(photos: list):
       </div>
       <div class="lightbox-info">
         <span class="lightbox-location" id="lightboxLocation"></span>
-        <div class="lightbox-specs" id="lightboxSpecs"></div>
       </div>
     </div>
   </div>
@@ -276,7 +248,6 @@ def render_gallery_html(photos: list):
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightboxImg');
       const lightboxLocation = document.getElementById('lightboxLocation');
-      const lightboxSpecs = document.getElementById('lightboxSpecs');
       const closeBtn = document.getElementById('lightboxClose');
       const prevBtn = document.getElementById('lightboxPrev');
       const nextBtn = document.getElementById('lightboxNext');
@@ -289,13 +260,7 @@ def render_gallery_html(photos: list):
 
         lightboxImg.src = '/' + item.full;
         lightboxImg.alt = item.location ? ('Photo from ' + item.location) : 'Photo';
-        lightboxLocation.textContent = item.location ? ('📍 ' + item.location) : '';
-
-        const specsParts = [];
-        if (item.camera) specsParts.push('<span class="gallery-tag">' + item.camera + '</span>');
-        if (item.lens) specsParts.push('<span>' + item.lens + '</span>');
-        if (item.settings) specsParts.push('<span>' + item.settings + '</span>');
-        lightboxSpecs.innerHTML = specsParts.join(' &bull; ');
+        lightboxLocation.textContent = item.location || '';
 
         const showNav = galleryData.length > 1;
         prevBtn.style.display = showNav ? 'flex' : 'none';
