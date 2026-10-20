@@ -108,6 +108,18 @@
     "height": 682
   },
   {
+    "id": "ann-arbor-2",
+    "location": "Ann Arbor",
+    "date": "2025-05-01",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "full": "photos/full/ann-arbor-2.jpg",
+    "thumb": "photos/thumbs/ann-arbor-2.jpg",
+    "width": 1024,
+    "height": 714
+  },
+  {
     "id": "iceland-2",
     "location": "Iceland",
     "camera": "Fujifilm X-T30 II",
