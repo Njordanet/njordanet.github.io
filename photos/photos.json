@@ -1,5 +1,17 @@
 [
   {
+    "id": "barcelona-spain",
+    "location": "Barcelona, Spain",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "date": "2026-10-19",
+    "full": "photos/full/barcelona-spain.jpg",
+    "thumb": "photos/thumbs/barcelona-spain.jpg",
+    "width": 1024,
+    "height": 682
+  },
+  {
     "id": "eastern-market-detroit",
     "location": "Eastern Market, Detroit",
     "camera": "Fujifilm X-T30 II",
