@@ -4,7 +4,7 @@
    typewriter body text & cursive handwritten masthead.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@600;700&display=swap');
 
 :root {
   --bg-canvas: #EAE2D5;           /* Light natural clay */
@@ -31,7 +31,6 @@
   --font-masthead: 'Caveat', cursive;
   --font-typewriter: 'Courier Prime', 'Courier New', Courier, monospace;
   --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
 }
 
 :root[data-theme="dark"] {
@@ -387,8 +386,8 @@ h4 {
 .hobby-card p,
 .item-card p {
   margin: 0;
-  font-family: var(--font-serif);
-  font-size: 14.5px;
+  font-family: var(--font-typewriter);
+  font-size: 13.5px;
   line-height: 1.65;
   color: var(--text-main);
 }
@@ -396,9 +395,9 @@ h4 {
 /* Lists and paragraphs */
 p {
   margin: 0 0 16px;
-  font-family: var(--font-serif);
-  font-size: 15.5px;
-  line-height: 1.75;
+  font-family: var(--font-typewriter);
+  font-size: 14.5px;
+  line-height: 1.7;
   color: var(--text-main);
 }
 
@@ -410,8 +409,8 @@ ul {
 li {
   margin-bottom: 10px;
   line-height: 1.65;
-  font-family: var(--font-serif);
-  font-size: 15px;
+  font-family: var(--font-typewriter);
+  font-size: 14px;
 }
 
 li b {
