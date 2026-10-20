@@ -228,7 +228,8 @@ def render_gallery_html(photos: list):
   <title>gallery – njorda.net</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="njorda.css">
+  <link rel="stylesheet" href="njorda.css?v=3">
+  <script src="/site.js?v=3" defer></script>
 </head>
 <body class="gallery-page">
 
@@ -384,25 +385,7 @@ def render_gallery_html(photos: list):
     }})();
   </script>
 
-  <script>
-    (function() {{
-      const el = document.querySelector('.tagline i');
-      if (!el) return;
-      const text = el.textContent.trim();
-      el.textContent = '';
-      el.classList.add('typing-cursor');
-      let idx = 0;
-      const speed = Math.max(16, Math.min(30, 1100 / text.length));
-      function step() {{
-        if (idx < text.length) {{
-          el.textContent += text.charAt(idx);
-          idx++;
-          setTimeout(step, speed);
-        }}
-      }}
-      setTimeout(step, 120);
-    }})();
-  </script>
+
 
 </body>
 </html>
