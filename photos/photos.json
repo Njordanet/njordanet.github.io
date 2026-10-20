@@ -1,5 +1,17 @@
 [
   {
+    "id": "eastern-market-detroit",
+    "location": "Eastern Market, Detroit",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "date": "2026-10-19",
+    "full": "photos/full/eastern-market-detroit.jpg",
+    "thumb": "photos/thumbs/eastern-market-detroit.jpg",
+    "width": 1024,
+    "height": 682
+  },
+  {
     "id": "edinburgh-scotland",
     "location": "Edinburgh, Scotland",
     "camera": "Fujifilm X-T30 II",
