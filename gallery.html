@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>gallery – njorda.net</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="njorda.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- Header -->
+    <div class="box">
+      <div class="box-header">
+        <div class="header-title flicker">njorda.net</div>
+        <div class="tagline">
+          <i>field.log // visual.archive</i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+      <a href="/index.html">home</a>
+      <a href="/about.html">about</a>
+      <a href="/tech.html">tech</a>
+      <a href="/gallery.html" class="active">gallery</a>
+      <a href="https://blog.njorda.net" target="_blank">blog ↗</a>
+      <a href="https://bsky.app/profile/njorda.net" target="_blank">bluesky ↗</a>
+      <a href="https://www.linkedin.com/in/jordannicholas" target="_blank">linkedin ↗</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="box">
+      <div class="box-header">
+        <h2>photo gallery</h2>
+      </div>
+      <div class="box-body">
+        <p>
+          Field frames, backcountry trails, travel snapshots, and everyday moments.
+          Mostly shot on a Fujifilm X-T30 II. Click any photo to expand into the lightbox.
+        </p>
+      </div>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Photo Card 1 -->
+      <div class="gallery-card" data-index="0">
+        <div class="gallery-thumb-wrap">
+          <img src="/photos/thumbs/granite-peaks-autumn-pines.jpg" alt="Granite Peaks & Autumn Pines" loading="lazy">
+        </div>
+        <div class="gallery-card-body">
+          <h4 class="gallery-card-title">Granite Peaks & Autumn Pines</h4>
+          <p class="gallery-card-caption">High alpine ridge above pine trees and autumn foliage under clear blue skies.</p>
+          <div class="gallery-card-meta"><span>2026-10-19</span><span>📍 Alpine Pass</span><span class="gallery-tag">Fujifilm X-T30 II</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Field Status -->
+    <div class="under-construction">
+      [ PHOTO ARCHIVE ] Actively updated • 1 photo logged
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      &copy; <script>document.write(new Date().getFullYear());</script> njorda.net &bull; visual archive
+    </div>
+
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox" aria-hidden="true">
+    <div class="lightbox-content" role="dialog" aria-modal="true">
+      <button class="lightbox-close" id="lightboxClose" title="Close (Esc)">&times;</button>
+      <button class="lightbox-nav-btn lightbox-prev" id="lightboxPrev" title="Previous photo (&larr;)">&lsaquo;</button>
+      <button class="lightbox-nav-btn lightbox-next" id="lightboxNext" title="Next photo (&rarr;)">&rsaquo;</button>
+      <div class="lightbox-image-wrap">
+        <img id="lightboxImg" src="" alt="">
+      </div>
+      <div class="lightbox-info">
+        <h3 class="lightbox-title" id="lightboxTitle"></h3>
+        <p class="lightbox-caption" id="lightboxCaption"></p>
+        <div class="lightbox-meta-bar" id="lightboxMeta"></div>
+      </div>
+    </div>
+  </div>
+
+  <script id="gallery-data" type="application/json">
+[
+  {
+    "id": "granite-peaks-autumn-pines",
+    "title": "Granite Peaks & Autumn Pines",
+    "caption": "High alpine ridge above pine trees and autumn foliage under clear blue skies.",
+    "date": "2026-10-19",
+    "location": "Alpine Pass",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "full": "photos/full/granite-peaks-autumn-pines.jpg",
+    "thumb": "photos/thumbs/granite-peaks-autumn-pines.jpg",
+    "width": 1024,
+    "height": 682
+  }
+]
+  </script>
+
+  <script>
+    (function() {
+      const galleryData = JSON.parse(document.getElementById('gallery-data').textContent || '[]');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxTitle = document.getElementById('lightboxTitle');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const lightboxMeta = document.getElementById('lightboxMeta');
+      const closeBtn = document.getElementById('lightboxClose');
+      const prevBtn = document.getElementById('lightboxPrev');
+      const nextBtn = document.getElementById('lightboxNext');
+      let currentIndex = -1;
+
+      function openLightbox(index) {
+        if (index < 0 || index >= galleryData.length) return;
+        currentIndex = index;
+        const item = galleryData[index];
+
+        lightboxImg.src = '/' + item.full;
+        lightboxImg.alt = item.title || 'Photo';
+        lightboxTitle.textContent = item.title || '';
+        lightboxCaption.textContent = item.caption || '';
+
+        const metaParts = [];
+        if (item.date) metaParts.push('<span>' + item.date + '</span>');
+        if (item.location) metaParts.push('<span>📍 ' + item.location + '</span>');
+        if (item.camera) metaParts.push('<span class="gallery-tag">' + item.camera + '</span>');
+        if (item.lens) metaParts.push('<span>' + item.lens + '</span>');
+        if (item.settings) metaParts.push('<span>' + item.settings + '</span>');
+        lightboxMeta.innerHTML = metaParts.join(' &bull; ');
+
+        const showNav = galleryData.length > 1;
+        prevBtn.style.display = showNav ? 'flex' : 'none';
+        nextBtn.style.display = showNav ? 'flex' : 'none';
+
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxImg.src = '';
+        document.body.style.overflow = '';
+      }
+
+      function showPrev() {
+        if (galleryData.length <= 1) return;
+        const next = (currentIndex - 1 + galleryData.length) % galleryData.length;
+        openLightbox(next);
+      }
+
+      function showNext() {
+        if (galleryData.length <= 1) return;
+        const next = (currentIndex + 1) % galleryData.length;
+        openLightbox(next);
+      }
+
+      document.querySelectorAll('.gallery-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const idx = parseInt(card.getAttribute('data-index'), 10);
+          openLightbox(idx);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowLeft') showPrev();
+        else if (e.key === 'ArrowRight') showNext();
+      });
+    })();
+  </script>
+
+</body>
+</html>

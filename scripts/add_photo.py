@@ -1,0 +1,468 @@
+#!/usr/bin/env python3
+"""
+scripts/add_photo.py - Add and optimize photos for njorda.net gallery
+"""
+
+import os
+import sys
+import json
+import re
+import argparse
+import subprocess
+from datetime import datetime
+from pathlib import Path
+from PIL import Image, ImageOps, ExifTags
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+PHOTOS_DIR = REPO_ROOT / "photos"
+FULL_DIR = PHOTOS_DIR / "full"
+THUMB_DIR = PHOTOS_DIR / "thumbs"
+JSON_FILE = PHOTOS_DIR / "photos.json"
+GALLERY_HTML = REPO_ROOT / "gallery.html"
+
+MAX_FULL_SIZE = 2048
+MAX_THUMB_SIZE = 650
+JPEG_QUALITY_FULL = 85
+JPEG_QUALITY_THUMB = 82
+
+
+def slugify(text: str) -> str:
+    text = text.lower()
+    text = re.sub(r'[^a-z0-9]+', '-', text).strip('-')
+    return text or "photo"
+
+
+def extract_exif_data(img: Image.Image) -> dict:
+    meta = {}
+    try:
+        exif = img._getexif()
+        if not exif:
+            return meta
+
+        raw = {}
+        for k, v in exif.items():
+            tag = ExifTags.TAGS.get(k, k)
+            raw[tag] = v
+
+        # Camera make / model
+        make = raw.get("Make", "").strip()
+        model = raw.get("Model", "").strip()
+        if model:
+            if make and not model.lower().startswith(make.lower()):
+                meta["camera"] = f"{make} {model}"
+            else:
+                meta["camera"] = model
+
+        # Lens
+        lens = raw.get("LensModel") or raw.get("LensMake")
+        if lens:
+            meta["lens"] = str(lens).strip()
+
+        # Date taken
+        dt_str = raw.get("DateTimeOriginal") or raw.get("DateTime")
+        if dt_str:
+            try:
+                dt = datetime.strptime(str(dt_str)[:19], "%Y:%m:%d %H:%M:%S")
+                meta["date"] = dt.strftime("%Y-%m-%d")
+            except Exception:
+                pass
+
+        # Exposure settings
+        settings = []
+        if "FocalLength" in raw:
+            try:
+                fl = float(raw["FocalLength"])
+                settings.append(f"{fl:.0f}mm" if fl.is_integer() else f"{fl:.1f}mm")
+            except Exception:
+                pass
+
+        if "FNumber" in raw:
+            try:
+                fn = float(raw["FNumber"])
+                settings.append(f"ƒ/{fn:.1f}")
+            except Exception:
+                pass
+
+        if "ExposureTime" in raw:
+            try:
+                et = float(raw["ExposureTime"])
+                if et < 1 and et > 0:
+                    settings.append(f"1/{int(round(1.0 / et))}s")
+                else:
+                    settings.append(f"{et:.1f}s")
+            except Exception:
+                pass
+
+        if "ISOSpeedRatings" in raw or "PhotographicSensitivity" in raw:
+            iso = raw.get("ISOSpeedRatings") or raw.get("PhotographicSensitivity")
+            settings.append(f"ISO {iso}")
+
+        if settings:
+            meta["settings"] = " • ".join(settings)
+
+    except Exception as e:
+        print(f"Note: Error reading EXIF: {e}")
+
+    return meta
+
+
+def process_image(src_path: Path, output_basename: str):
+    FULL_DIR.mkdir(parents=True, exist_ok=True)
+    THUMB_DIR.mkdir(parents=True, exist_ok=True)
+
+    img = Image.open(src_path)
+    img = ImageOps.exif_transpose(img)
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+
+    orig_w, orig_h = img.size
+
+    # Full web version (max 2048px)
+    full_img = img.copy()
+    full_img.thumbnail((MAX_FULL_SIZE, MAX_FULL_SIZE), Image.Resampling.LANCZOS)
+    full_dest = FULL_DIR / f"{output_basename}.jpg"
+    full_img.save(full_dest, "JPEG", quality=JPEG_QUALITY_FULL, optimize=True)
+
+    # Thumbnail version (max 650px)
+    thumb_img = img.copy()
+    thumb_img.thumbnail((MAX_THUMB_SIZE, MAX_THUMB_SIZE), Image.Resampling.LANCZOS)
+    thumb_dest = THUMB_DIR / f"{output_basename}.jpg"
+    thumb_img.save(thumb_dest, "JPEG", quality=JPEG_QUALITY_THUMB, optimize=True)
+
+    full_w, full_h = full_img.size
+    return f"photos/full/{output_basename}.jpg", f"photos/thumbs/{output_basename}.jpg", full_w, full_h
+
+
+def load_photos_json() -> list:
+    if JSON_FILE.exists():
+        try:
+            with open(JSON_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
+
+def save_photos_json(photos: list):
+    with open(JSON_FILE, "w", encoding="utf-8") as f:
+        json.dump(photos, f, indent=2, ensure_ascii=False)
+
+
+def render_gallery_html(photos: list):
+    """Generate or update gallery.html with the latest photos."""
+    cards_html = []
+    for idx, p in enumerate(photos):
+        title = p.get("title", "Untitled")
+        caption = p.get("caption", "")
+        date = p.get("date", "")
+        camera = p.get("camera", "")
+        location = p.get("location", "")
+        thumb = p.get("thumb", "")
+        full = p.get("full", "")
+
+        meta_items = []
+        if date:
+            meta_items.append(f"<span>{date}</span>")
+        if location:
+            meta_items.append(f"<span>📍 {location}</span>")
+        if camera:
+            meta_items.append(f'<span class="gallery-tag">{camera}</span>')
+
+        meta_html = f'<div class="gallery-card-meta">{"".join(meta_items)}</div>' if meta_items else ""
+        caption_html = f'<p class="gallery-card-caption">{caption}</p>' if caption else ""
+
+        card = f"""      <!-- Photo Card {idx + 1} -->
+      <div class="gallery-card" data-index="{idx}">
+        <div class="gallery-thumb-wrap">
+          <img src="/{thumb}" alt="{title}" loading="lazy">
+        </div>
+        <div class="gallery-card-body">
+          <h4 class="gallery-card-title">{title}</h4>
+          {caption_html}
+          {meta_html}
+        </div>
+      </div>"""
+        cards_html.append(card)
+
+    cards_block = "\n".join(cards_html)
+    json_block = json.dumps(photos, indent=2, ensure_ascii=False)
+
+    count_str = f"{len(photos)} photo" if len(photos) == 1 else f"{len(photos)} photos"
+
+    html_content = f"""<!DOCTYPE html>
+<html>
+<head>
+  <title>gallery – njorda.net</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="njorda.css">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- Header -->
+    <div class="box">
+      <div class="box-header">
+        <div class="header-title flicker">njorda.net</div>
+        <div class="tagline">
+          <i>field.log // visual.archive</i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+      <a href="/index.html">home</a>
+      <a href="/about.html">about</a>
+      <a href="/tech.html">tech</a>
+      <a href="/gallery.html" class="active">gallery</a>
+      <a href="https://blog.njorda.net" target="_blank">blog ↗</a>
+      <a href="https://bsky.app/profile/njorda.net" target="_blank">bluesky ↗</a>
+      <a href="https://www.linkedin.com/in/jordannicholas" target="_blank">linkedin ↗</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="box">
+      <div class="box-header">
+        <h2>photo gallery</h2>
+      </div>
+      <div class="box-body">
+        <p>
+          Field frames, backcountry trails, travel snapshots, and everyday moments.
+          Mostly shot on a Fujifilm X-T30 II. Click any photo to expand into the lightbox.
+        </p>
+      </div>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-grid" id="galleryGrid">
+{cards_block}
+    </div>
+
+    <!-- Field Status -->
+    <div class="under-construction">
+      [ PHOTO ARCHIVE ] Actively updated • {count_str} logged
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      &copy; <script>document.write(new Date().getFullYear());</script> njorda.net &bull; visual archive
+    </div>
+
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox" aria-hidden="true">
+    <div class="lightbox-content" role="dialog" aria-modal="true">
+      <button class="lightbox-close" id="lightboxClose" title="Close (Esc)">&times;</button>
+      <button class="lightbox-nav-btn lightbox-prev" id="lightboxPrev" title="Previous photo (&larr;)">&lsaquo;</button>
+      <button class="lightbox-nav-btn lightbox-next" id="lightboxNext" title="Next photo (&rarr;)">&rsaquo;</button>
+      <div class="lightbox-image-wrap">
+        <img id="lightboxImg" src="" alt="">
+      </div>
+      <div class="lightbox-info">
+        <h3 class="lightbox-title" id="lightboxTitle"></h3>
+        <p class="lightbox-caption" id="lightboxCaption"></p>
+        <div class="lightbox-meta-bar" id="lightboxMeta"></div>
+      </div>
+    </div>
+  </div>
+
+  <script id="gallery-data" type="application/json">
+{json_block}
+  </script>
+
+  <script>
+    (function() {{
+      const galleryData = JSON.parse(document.getElementById('gallery-data').textContent || '[]');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxTitle = document.getElementById('lightboxTitle');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const lightboxMeta = document.getElementById('lightboxMeta');
+      const closeBtn = document.getElementById('lightboxClose');
+      const prevBtn = document.getElementById('lightboxPrev');
+      const nextBtn = document.getElementById('lightboxNext');
+      let currentIndex = -1;
+
+      function openLightbox(index) {{
+        if (index < 0 || index >= galleryData.length) return;
+        currentIndex = index;
+        const item = galleryData[index];
+
+        lightboxImg.src = '/' + item.full;
+        lightboxImg.alt = item.title || 'Photo';
+        lightboxTitle.textContent = item.title || '';
+        lightboxCaption.textContent = item.caption || '';
+
+        const metaParts = [];
+        if (item.date) metaParts.push('<span>' + item.date + '</span>');
+        if (item.location) metaParts.push('<span>📍 ' + item.location + '</span>');
+        if (item.camera) metaParts.push('<span class="gallery-tag">' + item.camera + '</span>');
+        if (item.lens) metaParts.push('<span>' + item.lens + '</span>');
+        if (item.settings) metaParts.push('<span>' + item.settings + '</span>');
+        lightboxMeta.innerHTML = metaParts.join(' &bull; ');
+
+        const showNav = galleryData.length > 1;
+        prevBtn.style.display = showNav ? 'flex' : 'none';
+        nextBtn.style.display = showNav ? 'flex' : 'none';
+
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }}
+
+      function closeLightbox() {{
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxImg.src = '';
+        document.body.style.overflow = '';
+      }}
+
+      function showPrev() {{
+        if (galleryData.length <= 1) return;
+        const next = (currentIndex - 1 + galleryData.length) % galleryData.length;
+        openLightbox(next);
+      }}
+
+      function showNext() {{
+        if (galleryData.length <= 1) return;
+        const next = (currentIndex + 1) % galleryData.length;
+        openLightbox(next);
+      }}
+
+      document.querySelectorAll('.gallery-card').forEach(card => {{
+        card.addEventListener('click', () => {{
+          const idx = parseInt(card.getAttribute('data-index'), 10);
+          openLightbox(idx);
+        }});
+      }});
+
+      closeBtn.addEventListener('click', closeLightbox);
+      prevBtn.addEventListener('click', (e) => {{ e.stopPropagation(); showPrev(); }});
+      nextBtn.addEventListener('click', (e) => {{ e.stopPropagation(); showNext(); }});
+
+      lightbox.addEventListener('click', (e) => {{
+        if (e.target === lightbox) closeLightbox();
+      }});
+
+      document.addEventListener('keydown', (e) => {{
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowLeft') showPrev();
+        else if (e.key === 'ArrowRight') showNext();
+      }});
+    }})();
+  </script>
+
+</body>
+</html>
+"""
+    with open(GALLERY_HTML, "w", encoding="utf-8") as f:
+        f.write(html_content)
+    print(f"Updated {GALLERY_HTML} with {len(photos)} photo(s).")
+
+
+def add_photo(image_path: Path, title: str = None, caption: str = None,
+              date: str = None, location: str = None, camera: str = None,
+              lens: str = None, settings: str = None, push: bool = False):
+    if not image_path.exists():
+        print(f"Error: File not found: {image_path}", file=sys.stderr)
+        return False
+
+    with Image.open(image_path) as raw_img:
+        exif = extract_exif_data(raw_img)
+
+    title = title or (input("Photo Title: ").strip() if sys.stdin.isatty() else image_path.stem.replace("-", " ").title())
+    caption = caption or ""
+    date = date or exif.get("date") or datetime.now().strftime("%Y-%m-%d")
+    camera = camera or exif.get("camera") or "Fujifilm X-T30 II"
+    lens = lens or exif.get("lens") or ""
+    settings = settings or exif.get("settings") or ""
+
+    base_slug = slugify(title)
+    # Ensure unique filename
+    slug = base_slug
+    counter = 1
+    while (FULL_DIR / f"{slug}.jpg").exists():
+        counter += 1
+        slug = f"{base_slug}-{counter}"
+
+    print(f"Optimizing '{image_path.name}' -> '{slug}.jpg'...")
+    full_rel, thumb_rel, full_w, full_h = process_image(image_path, slug)
+
+    entry = {
+        "id": slug,
+        "title": title,
+        "caption": caption,
+        "date": date,
+        "location": location or "",
+        "camera": camera,
+        "lens": lens,
+        "settings": settings,
+        "full": full_rel,
+        "thumb": thumb_rel,
+        "width": full_w,
+        "height": full_h
+    }
+
+    photos = load_photos_json()
+    # Newest first
+    photos.insert(0, entry)
+    save_photos_json(photos)
+    render_gallery_html(photos)
+
+    print(f"Successfully added '{title}' to gallery!")
+    print(f"  Full web image: {full_rel} ({full_w}x{full_h})")
+    print(f"  Thumbnail:      {thumb_rel}")
+
+    if push:
+        print("\nCommitting and pushing to GitHub...")
+        subprocess.run(["git", "add", "photos/", "gallery.html"], cwd=REPO_ROOT, check=True)
+        subprocess.run(["git", "commit", "-m", f"Add photo: {title} to gallery"], cwd=REPO_ROOT, check=True)
+        subprocess.run(["git", "push", "origin", "main"], cwd=REPO_ROOT, check=True)
+        print("Done! Changes are live on GitHub.")
+
+    return True
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Add photos to njorda.net gallery")
+    parser.add_argument("image", nargs="?", default=None, help="Path to image file")
+    parser.add_argument("--title", "-t", help="Title of photo")
+    parser.add_argument("--caption", "-c", help="Description / caption")
+    parser.add_argument("--date", "-d", help="Date taken (YYYY-MM-DD)")
+    parser.add_argument("--location", "-l", help="Location")
+    parser.add_argument("--camera", help="Camera model")
+    parser.add_argument("--lens", help="Lens model")
+    parser.add_argument("--settings", help="Exposure settings string (e.g. '35mm • ƒ/4.0 • 1/250s • ISO 160')")
+    parser.add_argument("--push", action="store_true", help="Git commit and push immediately")
+    parser.add_argument("--rebuild", action="store_true", help="Rebuild gallery.html from photos.json without adding new photo")
+
+    args = parser.parse_args()
+
+    if args.rebuild:
+        photos = load_photos_json()
+        render_gallery_html(photos)
+        return
+
+    if not args.image:
+        parser.print_help()
+        sys.exit(1)
+
+    add_photo(
+        Path(args.image),
+        title=args.title,
+        caption=args.caption,
+        date=args.date,
+        location=args.location,
+        camera=args.camera,
+        lens=args.lens,
+        settings=args.settings,
+        push=args.push
+    )
+
+
+if __name__ == "__main__":
+    main()
