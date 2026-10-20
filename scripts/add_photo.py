@@ -392,6 +392,20 @@ def render_gallery_html(photos: list):
     print(f"Updated {GALLERY_HTML} with {len(photos)} photo(s).")
 
 
+def parse_date_str(s: str) -> str:
+    """Parse flexible date strings (e.g. 'May 2026', 'October 2025', '2025-09') into 'YYYY-MM-DD'."""
+    if not s:
+        return ""
+    s = s.strip()
+    for fmt in ("%Y-%m-%d", "%Y-%m", "%Y:%m:%d", "%B %Y", "%b %Y", "%B, %Y", "%b, %Y", "%m/%Y", "%m/%d/%Y"):
+        try:
+            dt = datetime.strptime(s, fmt)
+            return dt.strftime("%Y-%m-%d")
+        except ValueError:
+            pass
+    return s
+
+
 def add_photo(image_path: Path, location: str = None, camera: str = None,
               lens: str = None, settings: str = None, date: str = None,
               push: bool = False, **kwargs):
@@ -403,7 +417,13 @@ def add_photo(image_path: Path, location: str = None, camera: str = None,
         exif = extract_exif_data(raw_img)
 
     location = location or (input("Location: ").strip() if sys.stdin.isatty() else "Andorra")
-    date = date or exif.get("date") or datetime.now().strftime("%Y-%m-%d")
+    raw_date = date or exif.get("date")
+    if raw_date:
+        date = parse_date_str(raw_date)
+    elif sys.stdin.isatty():
+        date = parse_date_str(input("Month/Year taken (e.g. May 2026 or 2026-05): ").strip())
+    else:
+        date = datetime.now().strftime("%Y-%m-%d")
     camera = camera or exif.get("camera") or "Fujifilm X-T30 II"
     lens = lens or exif.get("lens") or ""
     settings = settings or exif.get("settings") or ""
