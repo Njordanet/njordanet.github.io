@@ -1,8 +1,46 @@
 /**
- * site.js - Global animations & navigation behavior for njorda.net
+ * site.js - Global animations, theme & navigation behavior for njorda.net
  */
 (function() {
+  function getActiveTheme() {
+    const saved = localStorage.getItem('njorda_theme');
+    if (saved) return saved;
+    return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('njorda_theme', theme);
+    const themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) {
+      themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      const label = theme === 'dark' ? 'Switch to warm daylight' : 'Switch to cozy midnight';
+      themeBtn.setAttribute('title', label);
+      themeBtn.setAttribute('aria-label', label);
+    }
+  }
+
+  function initTheme() {
+    const theme = getActiveTheme();
+    document.documentElement.setAttribute('data-theme', theme);
+    const themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) {
+      themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      const label = theme === 'dark' ? 'Switch to warm daylight' : 'Switch to cozy midnight';
+      themeBtn.setAttribute('title', label);
+      themeBtn.setAttribute('aria-label', label);
+
+      themeBtn.onclick = function() {
+        const current = getActiveTheme();
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+      };
+    }
+  }
+
   function initPage() {
+    initTheme();
+
     // 1. Highlight active navigation link with entrance animation on EVERY page
     const rawPath = window.location.pathname;
     let currentPath = rawPath.replace(/\/index\.html$/, '/').replace(/\.html$/, '');

@@ -4,8 +4,9 @@
   <title>njorda.net home</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="njorda.css?v=3">
-  <script src="/site.js?v=3" defer></script>
+  <script>(function(){const t=localStorage.getItem('njorda_theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+  <link rel="stylesheet" href="njorda.css?v=4">
+  <script src="/site.js?v=4" defer></script>
 </head>
 <body>
 
@@ -14,6 +15,7 @@
     <!-- Header -->
     <div class="box">
       <div class="box-header">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">🌙</button>
         <div class="header-title flicker">njorda.net</div>
         <div class="tagline">
           <i>system.online // personal.log initialized</i>
@@ -64,20 +66,20 @@
         <h2>quick links</h2>
       </div>
       <div class="box-body">
-        <ul style="list-style: none; margin: 0; padding: 0;">
-          <li style="margin-bottom: 8px;">&rarr; <a href="/about.html">about</a></li>
-          <li style="margin-bottom: 8px;">&rarr; <a href="/tech.html">tech &amp; gear setup</a></li>
-          <li style="margin-bottom: 8px;">&rarr; <a href="/gallery.html">photo gallery</a></li>
-          <li style="margin-bottom: 8px;">&rarr; <a href="https://blog.njorda.net" target="_blank">blog / substack</a></li>
-          <li style="margin-bottom: 8px;">&rarr; <a href="https://bsky.app/profile/njorda.net" target="_blank">bluesky</a></li>
-          <li style="margin-bottom: 8px;">&rarr; <a href="https://www.linkedin.com/in/jordannicholas/" target="_blank">linkedin</a></li>
+        <ul class="quick-links-list">
+          <li><span class="link-arrow">&rarr;</span> <a href="/about.html">about</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="/tech.html">tech &amp; gear setup</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="/gallery.html">photo gallery</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="https://blog.njorda.net" target="_blank">blog / substack ↗</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="https://bsky.app/profile/njorda.net" target="_blank">bluesky ↗</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="https://www.linkedin.com/in/jordannicholas/" target="_blank">linkedin ↗</a></li>
         </ul>
       </div>
     </div>
 
     <!-- Under Construction -->
     <div class="under-construction">
-      [ FIELD LOG ] Always evolving • Written &amp; maintained by Nick
+      [ FIELD STATION ] Ann Arbor, MI &bull; 🍂 Autumn &bull; Personal Notebook &bull; Maintained by Nick
     </div>
 
     <!-- Footer -->

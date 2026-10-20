@@ -4,8 +4,9 @@
   <title>gallery – njorda.net</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="njorda.css?v=3">
-  <script src="/site.js?v=3" defer></script>
+  <script>(function(){const t=localStorage.getItem('njorda_theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+  <link rel="stylesheet" href="njorda.css?v=4">
+  <script src="/site.js?v=4" defer></script>
 </head>
 <body class="gallery-page">
 
@@ -14,6 +15,7 @@
     <!-- Header -->
     <div class="box">
       <div class="box-header">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">🌙</button>
         <div class="header-title flicker">njorda.net</div>
         <div class="tagline">
           <i>field.log // visual.archive</i>
@@ -146,7 +148,7 @@
 
     <!-- Field Status -->
     <div class="under-construction">
-      [ FIELD ARCHIVE ] Actively updated &bull; 12 frames
+      [ FIELD ARCHIVE ] Ann Arbor, MI &bull; 🍂 Autumn &bull; Actively updated &bull; 12 frames
     </div>
 
     <!-- Footer -->
@@ -403,6 +405,23 @@
       lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) closeLightbox();
       });
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      lightbox.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - touchStartX;
+        const diffY = e.changedTouches[0].screenY - touchStartY;
+        if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX < 0) showNext();
+          else showPrev();
+        }
+      }, { passive: true });
 
       document.addEventListener('keydown', (e) => {
         if (!lightbox.classList.contains('active')) return;

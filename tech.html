@@ -4,8 +4,9 @@
   <title>tech i'm into – njorda.net</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="njorda.css?v=3">
-  <script src="/site.js?v=3" defer></script>
+  <script>(function(){const t=localStorage.getItem('njorda_theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+  <link rel="stylesheet" href="njorda.css?v=4">
+  <script src="/site.js?v=4" defer></script>
 </head>
 <body>
 
@@ -14,6 +15,7 @@
     <!-- Header -->
     <div class="box">
       <div class="box-header">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">🌙</button>
         <div class="header-title flicker">njorda.net</div>
         <div class="tagline">
           <i>tech.log // tools.online</i>
@@ -57,22 +59,34 @@ updated 10.16.2026
         <h3>Computers</h3>
         <div class="items-grid">
           <div class="item-card">
-            <h4>MacBook Pro M1</h4>
+            <div class="card-top">
+              <h4>MacBook Pro M1</h4>
+              <span class="card-badge">daily driver</span>
+            </div>
             <p>Daily driver for coding, writing, and browsing. Great battery, still years of updates left and plenty fast enough for the random things I use it for. If I were to buy a new Mac now, I'd probably get an Air for portability because I really don't need the power/fan of a pro. I would like an oled display with 120hz though....</p>
           </div>
 
           <div class="item-card">
-            <h4>ThinkPad T14s Gen 2 (AMD)</h4>
+            <div class="card-top">
+              <h4>ThinkPad T14s Gen 2 (AMD)</h4>
+              <span class="card-badge">fedora linux</span>
+            </div>
             <p>AMD Ryzen 7 PRO 5850U (8C/16T), 16GB DDR4, 512GB NVMe SSD. Installed Fedora on it. Nice laptop for the price (paid $250 on eBay). My only complaint is that the speaker is tinny and horrible, and the display is only serviceable.</p>
           </div>
 
           <div class="item-card">
-            <h4>Ubuntu Server / Old Gaming PC ("panda")</h4>
+            <div class="card-top">
+              <h4>Ubuntu Server ("panda")</h4>
+              <span class="card-badge">24/7 homelab</span>
+            </div>
             <p>Intel Core i5-7500 @ 3.40GHz, NVIDIA GeForce GTX 1060 6GB, 16GB RAM, 500GB NVMe + 1TB HDD + 16TB Plex storage (2x 8TB). Old gaming PC (PowerSpec G221) turned 24/7 Ubuntu server running Plex and Antigravity.</p>
           </div>
 
           <div class="item-card">
-            <h4>CyberPower PC (W11)</h4>
+            <div class="card-top">
+              <h4>CyberPower PC (W11)</h4>
+              <span class="card-badge">gaming rig</span>
+            </div>
             <p>AMD Ryzen 7 7800X3D, 32GB RAM, NVIDIA RTX 4070 Super, 2TB SSD. Gaming PC, pretty much only use it for steam and Guild Wars 2.</p>
           </div>
         </div>
@@ -80,12 +94,18 @@ updated 10.16.2026
         <h3>Phones + Tablets</h3>
         <div class="items-grid">
           <div class="item-card">
-            <h4>iPhone 18 Pro (Black)</h4>
+            <div class="card-top">
+              <h4>iPhone 18 Pro (Black)</h4>
+              <span class="card-badge">daily carry</span>
+            </div>
             <p>Photography, workflows, daily carry. All phones are the same.</p>
           </div>
 
           <div class="item-card">
-            <h4>iPad Pro M4</h4>
+            <div class="card-top">
+              <h4>iPad Pro M4</h4>
+              <span class="card-badge">tablet</span>
+            </div>
             <p>Reading, YouTube, travel display, home dashboard.</p>
           </div>
         </div>
@@ -93,7 +113,10 @@ updated 10.16.2026
         <h3>Wearables</h3>
         <div class="items-grid">
           <div class="item-card">
-            <h4>Garmin Instinct 2</h4>
+            <div class="card-top">
+              <h4>Garmin Instinct 2</h4>
+              <span class="card-badge">running / vo2</span>
+            </div>
             <p>Running metrics, training, VO2 tracking. Looking at something with maps next time around.</p>
           </div>
         </div>
@@ -101,22 +124,34 @@ updated 10.16.2026
         <h3>Audio Gear</h3>
         <div class="items-grid">
           <div class="item-card">
-            <h4>AirPods 4 (ANC)</h4>
+            <div class="card-top">
+              <h4>AirPods 4 (ANC)</h4>
+              <span class="card-badge">open anc</span>
+            </div>
             <p>I don't like sealed earbuds so these give anc with an open feel. Not the best sound or anc but they work well with all my Apple stuff.</p>
           </div>
 
           <div class="item-card">
-            <h4>Bose QC 35 ii</h4>
+            <div class="card-top">
+              <h4>Bose QC 35 ii</h4>
+              <span class="card-badge">anc classic</span>
+            </div>
             <p>Dated noise cancelling headphones that still work fine. I wish they had usb-c.</p>
           </div>
 
           <div class="item-card">
-            <h4>Sonos Setup</h4>
+            <div class="card-top">
+              <h4>Sonos Setup</h4>
+              <span class="card-badge">whole home</span>
+            </div>
             <p>Home audio ecosystem. I have like 7 Era 100s, a Beam sound bar in living room, 2 mini subs, and a roam 2. I split these into main floor and basement as groups and can move audio around my house pretty seemlessly.</p>
           </div>
 
           <div class="item-card">
-            <h4>Spotify</h4>
+            <div class="card-top">
+              <h4>Spotify</h4>
+              <span class="card-badge">streaming</span>
+            </div>
             <p>Mediocre streaming service I'm using until they piss me off enough to self host.</p>
           </div>
         </div>
@@ -124,17 +159,26 @@ updated 10.16.2026
         <h3>Smart Home / Automation</h3>
         <div class="items-grid">
           <div class="item-card">
-            <h4>Apple Homekit + Matter</h4>
+            <div class="card-top">
+              <h4>Apple Homekit + Matter</h4>
+              <span class="card-badge">smart home</span>
+            </div>
             <p>Unified home control. Hella switches and bulbs to automate lights on at sunset etc.</p>
           </div>
 
           <div class="item-card">
-            <h4>Apple HomeView</h4>
+            <div class="card-top">
+              <h4>Apple HomeView</h4>
+              <span class="card-badge">dashboard</span>
+            </div>
             <p>New home dashboard and view for managing and monitoring the house.</p>
           </div>
 
           <div class="item-card">
-            <h4>Siri AI and automations</h4>
+            <div class="card-top">
+              <h4>Siri AI and automations</h4>
+              <span class="card-badge">shortcuts</span>
+            </div>
             <p>Shortcuts, focus modes, intelligent assistant tasks, and routines.</p>
           </div>
         </div>
@@ -142,22 +186,34 @@ updated 10.16.2026
         <h3>Random Hobbies</h3>
         <div class="items-grid">
           <div class="item-card">
-            <h4>XT-eink X4 (with Crossover)</h4>
+            <div class="card-top">
+              <h4>XT-eink X4</h4>
+              <span class="card-badge">e-ink reader</span>
+            </div>
             <p>A tiny, pocket-sized e-ink reader running custom open-source firmware for distraction-free reading on the go.</p>
           </div>
 
           <div class="item-card">
-            <h4>Retroid Pocket 4 pro / Miyoo Mini+</h4>
+            <div class="card-top">
+              <h4>Retroid Pocket 4 pro / Miyoo Mini+</h4>
+              <span class="card-badge">retro emulation</span>
+            </div>
             <p>Handheld retro gaming. Retroid is a bit over-kill for what I actually emulate in a handheld format but the Miyoo Mini + gives me all my gameboy and gba goodness I need.</p>
           </div>
 
           <div class="item-card">
-            <h4>Fujifilm X-T30 II</h4>
+            <div class="card-top">
+              <h4>Fujifilm X-T30 II</h4>
+              <span class="card-badge">mirrorless</span>
+            </div>
             <p>Quality intro level mirrorless camera with great film simulations for lazy people like me that don't want to bother editing. Lenses: TT Artisan 27mm f2.8(41mm full frame equivalent) as a pancake every day lens, Fujinon XT 16-80mm, f4.0 zoom lens for more focal length options.</p>
           </div>
 
           <div class="item-card">
-            <h4>CampSnap</h4>
+            <div class="card-top">
+              <h4>CampSnap</h4>
+              <span class="card-badge">disposable digital</span>
+            </div>
             <p>Cheap chinese made digital disposable camera that sucks because it's supposed to.</p>
           </div>
         </div>
@@ -165,32 +221,50 @@ updated 10.16.2026
         <h3>Software</h3>
         <div class="items-grid">
           <div class="item-card">
-            <h4>Antigravity (Google)</h4>
+            <div class="card-top">
+              <h4>Antigravity (Google)</h4>
+              <span class="card-badge">agentic ai</span>
+            </div>
             <p>Started using it when I started working at Google and now I run it on my old gaming PC turned Ubuntu server.</p>
           </div>
 
           <div class="item-card">
-            <h4>Pocket Casts</h4>
+            <div class="card-top">
+              <h4>Pocket Casts</h4>
+              <span class="card-badge">podcasts</span>
+            </div>
             <p>Hands down the best podcast app I've found.</p>
           </div>
 
           <div class="item-card">
-            <h4>VS Code</h4>
+            <div class="card-top">
+              <h4>VS Code</h4>
+              <span class="card-badge">ide</span>
+            </div>
             <p>Current IDE of choice, no projects right now though.</p>
           </div>
 
           <div class="item-card">
-            <h4>Apple Notes</h4>
+            <div class="card-top">
+              <h4>Apple Notes</h4>
+              <span class="card-badge">long-term</span>
+            </div>
             <p>Long term information storage.</p>
           </div>
 
           <div class="item-card">
-            <h4>Apple Reminders</h4>
+            <div class="card-top">
+              <h4>Apple Reminders</h4>
+              <span class="card-badge">daily tasks</span>
+            </div>
             <p>Short term info storage (pocket replacement), shared shopping lists, time/location sensitive reminders.</p>
           </div>
 
           <div class="item-card">
-            <h4>qBittorrent</h4>
+            <div class="card-top">
+              <h4>qBittorrent</h4>
+              <span class="card-badge">self-hosted</span>
+            </div>
             <p>Stuff.</p>
           </div>
         </div>

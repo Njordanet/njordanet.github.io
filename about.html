@@ -4,8 +4,9 @@
   <title>about – njorda.net</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="njorda.css?v=3">
-  <script src="/site.js?v=3" defer></script>
+  <script>(function(){const t=localStorage.getItem('njorda_theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+  <link rel="stylesheet" href="njorda.css?v=4">
+  <script src="/site.js?v=4" defer></script>
 </head>
 <body>
 
@@ -14,6 +15,7 @@
     <!-- Header -->
     <div class="box">
       <div class="box-header">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">🌙</button>
         <div class="header-title flicker">njorda.net</div>
         <div class="tagline">
           <i>about:config // profile loaded</i>
@@ -63,72 +65,114 @@
 
         <div class="hobbies-grid">
           <div class="hobby-card">
-            <h4>Technology</h4>
+            <div class="card-top">
+              <h4>Technology</h4>
+              <span class="card-badge">hardware &amp; code</span>
+            </div>
             <p>Consumer tech nerd to the fullest. I was installing Linux on laptops at 12 and still have too many gadgets around the house. I binge videos, devour podcasts, and read all the news. Faithful Verge reader. I love retro tech deep dives. Software and hardware? Yes.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Productivity &amp; Systems</h4>
+            <div class="card-top">
+              <h4>Productivity &amp; Systems</h4>
+              <span class="card-badge">workflows</span>
+            </div>
             <p>Forever tweaking systems. Lists, databases, automation, AI, smart tools… the process is the point now, not just the outcome. I run a headless server for media as well as Antigravity for any type of automation I feel like.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Running</h4>
+            <div class="card-top">
+              <h4>Running</h4>
+              <span class="card-badge">endurance</span>
+            </div>
             <p>Track and cross-country in high school turned into half and full marathons as an adult.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Strength Training</h4>
+            <div class="card-top">
+              <h4>Strength Training</h4>
+              <span class="card-badge">fitness</span>
+            </div>
             <p>When I’m not training for a race, I’m in the basement lifting barbells and dumbbells. Your body is like a 401k—invest in muscle now for later, inspired by Jordan at Barbell Medicine.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Sports</h4>
+            <div class="card-top">
+              <h4>Sports</h4>
+              <span class="card-badge">fandom</span>
+            </div>
             <p>NFL: New England Patriots and Detroit Lions. College: Michigan Wolverines and Eastern Michigan Eagles. Family affiliations explain the split loyalties.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Writing</h4>
+            <div class="card-top">
+              <h4>Writing</h4>
+              <span class="card-badge">craft</span>
+            </div>
             <p>I always have a writing project. Blogs, satire, journals—you name it, I’ve dabbled. Am I good? Doesn’t matter. It’s fun.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Gaming</h4>
+            <div class="card-top">
+              <h4>Gaming</h4>
+              <span class="card-badge">retro &amp; pc</span>
+            </div>
             <p>Not “a gamer,” but I play games. PC with Steam, lots of Guild Wars 2, plus retro on the Retroid Pocket and Miyoo Mini+. More into RPGs than twitchy FPS.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Food &amp; Drinks</h4>
+            <div class="card-top">
+              <h4>Food &amp; Drinks</h4>
+              <span class="card-badge">culinary</span>
+            </div>
             <p>I eat everything and love trying new cuisines while traveling. At home, I make pizza and bread and lean toward savory bakes.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Outdoors</h4>
+            <div class="card-top">
+              <h4>Outdoors</h4>
+              <span class="card-badge">trails</span>
+            </div>
             <p>Hiking, camping, fishing, kayaking, swimming, biking, backpacking. If it’s outside, I’m game.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Music</h4>
+            <div class="card-top">
+              <h4>Music</h4>
+              <span class="card-badge">sound</span>
+            </div>
             <p>A lot of electronic: House and Techno. Also alt rock, indie, indie pop, and dream pop.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Travel</h4>
+            <div class="card-top">
+              <h4>Travel</h4>
+              <span class="card-badge">wanderlust</span>
+            </div>
             <p>My wife and I aim for at least one international trip a year, plus lots of U.S. trips. Favorites: Japan, Iceland, Costa Rica.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Movies</h4>
+            <div class="card-top">
+              <h4>Movies</h4>
+              <span class="card-badge">cinema</span>
+            </div>
             <p>Sci-fi, drama, comedy. All-time favorites include Blade Runner (both), Dune (the new ones), and Star Wars.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Photography</h4>
+            <div class="card-top">
+              <h4>Photography</h4>
+              <span class="card-badge">fujifilm</span>
+            </div>
             <p>Long-time interest that clicked in 2025 when I picked up a Fujifilm X-T30 II and a couple lenses. After many books, videos, and practice hours, I now take slightly less bad photos—and love the process.</p>
           </div>
 
           <div class="hobby-card">
-            <h4>Skiing</h4>
+            <div class="card-top">
+              <h4>Skiing</h4>
+              <span class="card-badge">slopes</span>
+            </div>
             <p>I live in flat Michigan but chase mountains with an Ikon pass when I can, out West or up to Boyne. I actually got back into running to build ski fitness.</p>
           </div>
         </div>
@@ -154,17 +198,20 @@
         <h2>Quick Links</h2>
       </div>
       <div class="box-body">
-        &raquo; <a href="/index.html">home</a><br>
-        &raquo; <a href="/gallery.html">photo gallery</a><br>
-        &raquo; <a href="https://blog.njorda.net" target="_blank">blog / substack</a><br>
-        &raquo; <a href="https://bsky.app/profile/njorda.net" target="_blank">bluesky</a><br>
-        &raquo; <a href="https://www.linkedin.com/in/jordannicholas/" target="_blank">linkedin</a><br>
+        <ul class="quick-links-list">
+          <li><span class="link-arrow">&rarr;</span> <a href="/index.html">home</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="/tech.html">tech &amp; gear setup</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="/gallery.html">photo gallery</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="https://blog.njorda.net" target="_blank">blog / substack ↗</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="https://bsky.app/profile/njorda.net" target="_blank">bluesky ↗</a></li>
+          <li><span class="link-arrow">&rarr;</span> <a href="https://www.linkedin.com/in/jordannicholas/" target="_blank">linkedin ↗</a></li>
+        </ul>
       </div>
     </div>
 
     <!-- Under Construction -->
     <div class="under-construction">
-      [ PROFILE STATUS ] Live, but always evolving. New hobbies updating…
+      [ PROFILE STATUS ] Ann Arbor, MI &bull; 🍂 Autumn &bull; Personal Dossier &bull; Live &amp; Evolving
     </div>
 
     <!-- Footer -->
