@@ -1,5 +1,17 @@
 [
   {
+    "id": "iceland",
+    "location": "Iceland",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "date": "2026-10-19",
+    "full": "photos/full/iceland.jpg",
+    "thumb": "photos/thumbs/iceland.jpg",
+    "width": 1024,
+    "height": 768
+  },
+  {
     "id": "detroit",
     "location": "Detroit",
     "camera": "Fujifilm X-T30 II",
