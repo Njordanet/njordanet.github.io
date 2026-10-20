@@ -32,21 +32,52 @@ def slugify(text: str) -> str:
     return text or "photo"
 
 
+def format_month_year(date_str: str) -> str:
+    """Format YYYY-MM-DD or YYYY-MM into 'Month Year', e.g. 'Oct 2026'."""
+    if not date_str:
+        return ""
+    try:
+        clean = date_str.replace(":", "-")[:7]
+        dt = datetime.strptime(clean, "%Y-%m")
+        return dt.strftime("%b %Y")
+    except Exception:
+        return date_str
+
+
+def sort_photos(photos: list) -> list:
+    """Sort photos newest to oldest by date string (YYYY-MM-DD or YYYY-MM)."""
+    return sorted(photos, key=lambda p: (p.get("date", ""), p.get("id", "")), reverse=True)
+
+
 def extract_exif_data(img: Image.Image) -> dict:
     meta = {}
     try:
-        exif = img._getexif()
-        if not exif:
-            return meta
-
         raw = {}
-        for k, v in exif.items():
+        # 1. Root EXIF dictionary
+        exif_dict = img._getexif() or {}
+        for k, v in exif_dict.items():
             tag = ExifTags.TAGS.get(k, k)
             raw[tag] = v
 
+        # 2. Pillow getexif() + sub-IFD
+        exif = img.getexif()
+        if exif:
+            for k, v in exif.items():
+                tag = ExifTags.TAGS.get(k, k)
+                if tag not in raw or not raw[tag]:
+                    raw[tag] = v
+            try:
+                exif_ifd = exif.get_ifd(ExifTags.IFD.Exif)
+                for k, v in exif_ifd.items():
+                    tag = ExifTags.TAGS.get(k, k)
+                    if tag not in raw or not raw[tag]:
+                        raw[tag] = v
+            except Exception:
+                pass
+
         # Camera make / model
-        make = raw.get("Make", "").strip()
-        model = raw.get("Model", "").strip()
+        make = str(raw.get("Make", "")).strip()
+        model = str(raw.get("Model", "")).strip()
         if model:
             if make and not model.lower().startswith(make.lower()):
                 meta["camera"] = f"{make} {model}"
@@ -58,14 +89,20 @@ def extract_exif_data(img: Image.Image) -> dict:
         if lens:
             meta["lens"] = str(lens).strip()
 
-        # Date taken
-        dt_str = raw.get("DateTimeOriginal") or raw.get("DateTime")
-        if dt_str:
-            try:
-                dt = datetime.strptime(str(dt_str)[:19], "%Y:%m:%d %H:%M:%S")
-                meta["date"] = dt.strftime("%Y-%m-%d")
-            except Exception:
-                pass
+        # Date taken: check DateTimeOriginal, DateTimeDigitized, DateTime
+        for key in ("DateTimeOriginal", "DateTimeDigitized", "DateTime"):
+            dt_val = raw.get(key)
+            if dt_val:
+                s_clean = str(dt_val).strip()[:19]
+                for fmt in ("%Y:%m:%d %H:%M:%S", "%Y-%m-%d %H:%M:%S", "%Y:%m:%d", "%Y-%m-%d"):
+                    try:
+                        dt = datetime.strptime(s_clean, fmt)
+                        meta["date"] = dt.strftime("%Y-%m-%d")
+                        break
+                    except Exception:
+                        pass
+                if "date" in meta:
+                    break
 
         # Exposure settings
         settings = []
@@ -144,18 +181,30 @@ def load_photos_json() -> list:
 
 
 def save_photos_json(photos: list):
+    photos = sort_photos(photos)
     with open(JSON_FILE, "w", encoding="utf-8") as f:
         json.dump(photos, f, indent=2, ensure_ascii=False)
 
 
 def render_gallery_html(photos: list):
-    """Generate or update gallery.html with the latest photos."""
+    """Generate or update gallery.html with photos sorted newest to oldest."""
+    photos = sort_photos(photos)
+
     cards_html = []
     for idx, p in enumerate(photos):
         location = p.get("location", "")
+        date_str = p.get("date", "")
+        month_year = format_month_year(date_str)
         thumb = p.get("thumb", "")
 
-        location_html = f'<span class="gallery-location">{location}</span>' if location else ""
+        label_parts = []
+        if location:
+            label_parts.append(location)
+        if month_year:
+            label_parts.append(f'<span class="gallery-date">{month_year}</span>')
+
+        caption_html = ' <span class="gallery-sep">&bull;</span> '.join(label_parts)
+        location_block = f'<span class="gallery-location">{caption_html}</span>' if caption_html else ""
 
         card = f"""      <!-- Photo Card {idx + 1} -->
       <div class="gallery-card" data-index="{idx}">
@@ -163,7 +212,7 @@ def render_gallery_html(photos: list):
           <img src="/{thumb}" alt="{location or 'Photo'}" loading="lazy">
         </div>
         <div class="gallery-card-body">
-          {location_html}
+          {location_block}
         </div>
       </div>"""
         cards_html.append(card)
@@ -253,6 +302,22 @@ def render_gallery_html(photos: list):
       const nextBtn = document.getElementById('lightboxNext');
       let currentIndex = -1;
 
+      function formatMonthYear(dateStr) {{
+        if (!dateStr) return '';
+        try {{
+          const parts = dateStr.replace(/:/g, '-').split('-');
+          if (parts.length >= 2) {{
+            const year = parseInt(parts[0], 10);
+            const monthIndex = parseInt(parts[1], 10) - 1;
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            if (monthIndex >= 0 && monthIndex < 12 && !isNaN(year)) {{
+              return months[monthIndex] + ' ' + year;
+            }}
+          }}
+        }} catch (e) {{}}
+        return dateStr;
+      }}
+
       function openLightbox(index) {{
         if (index < 0 || index >= galleryData.length) return;
         currentIndex = index;
@@ -260,7 +325,12 @@ def render_gallery_html(photos: list):
 
         lightboxImg.src = '/' + item.full;
         lightboxImg.alt = item.location ? ('Photo from ' + item.location) : 'Photo';
-        lightboxLocation.textContent = item.location || '';
+
+        const labelParts = [];
+        if (item.location) labelParts.push(item.location);
+        const my = formatMonthYear(item.date);
+        if (my) labelParts.push('<span class="lightbox-date">' + my + '</span>');
+        lightboxLocation.innerHTML = labelParts.join(' &bull; ');
 
         const showNav = galleryData.length > 1;
         prevBtn.style.display = showNav ? 'flex' : 'none';
@@ -351,10 +421,10 @@ def add_photo(image_path: Path, location: str = None, camera: str = None,
     entry = {
         "id": slug,
         "location": location,
+        "date": date,
         "camera": camera,
         "lens": lens,
         "settings": settings,
-        "date": date,
         "full": full_rel,
         "thumb": thumb_rel,
         "width": full_w,
@@ -362,12 +432,13 @@ def add_photo(image_path: Path, location: str = None, camera: str = None,
     }
 
     photos = load_photos_json()
-    # Newest first
-    photos.insert(0, entry)
+    photos.append(entry)
+    # Automatically sort newest to oldest
+    photos = sort_photos(photos)
     save_photos_json(photos)
     render_gallery_html(photos)
 
-    print(f"Successfully added photo from '{location}' to gallery!")
+    print(f"Successfully added photo from '{location}' ({format_month_year(date)}) to gallery!")
     print(f"  Full web image: {full_rel} ({full_w}x{full_h})")
     print(f"  Thumbnail:      {thumb_rel}")
 
@@ -384,13 +455,13 @@ def add_photo(image_path: Path, location: str = None, camera: str = None,
 def main():
     parser = argparse.ArgumentParser(description="Add photos to njorda.net gallery")
     parser.add_argument("image", nargs="?", default=None, help="Path to image file")
-    parser.add_argument("--title", "-t", help="Title of photo")
-    parser.add_argument("--caption", "-c", help="Description / caption")
-    parser.add_argument("--date", "-d", help="Date taken (YYYY-MM-DD)")
+    parser.add_argument("--title", "-t", help="Title of photo (legacy)")
+    parser.add_argument("--caption", "-c", help="Description / caption (legacy)")
+    parser.add_argument("--date", "-d", help="Date taken (YYYY-MM-DD or YYYY-MM)")
     parser.add_argument("--location", "-l", help="Location")
     parser.add_argument("--camera", help="Camera model")
     parser.add_argument("--lens", help="Lens model")
-    parser.add_argument("--settings", help="Exposure settings string (e.g. '35mm • ƒ/4.0 • 1/250s • ISO 160')")
+    parser.add_argument("--settings", help="Exposure settings string")
     parser.add_argument("--push", action="store_true", help="Git commit and push immediately")
     parser.add_argument("--rebuild", action="store_true", help="Rebuild gallery.html from photos.json without adding new photo")
 
@@ -407,8 +478,6 @@ def main():
 
     add_photo(
         Path(args.image),
-        title=args.title,
-        caption=args.caption,
         date=args.date,
         location=args.location,
         camera=args.camera,
