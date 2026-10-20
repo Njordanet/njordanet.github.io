@@ -1,5 +1,17 @@
 [
   {
+    "id": "connecticut",
+    "location": "Connecticut",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "date": "2026-10-19",
+    "full": "photos/full/connecticut.jpg",
+    "thumb": "photos/thumbs/connecticut.jpg",
+    "width": 1024,
+    "height": 682
+  },
+  {
     "id": "ann-arbor",
     "location": "Ann Arbor",
     "camera": "Fujifilm X-T30 II",
