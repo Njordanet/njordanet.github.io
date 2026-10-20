@@ -1,15 +1,13 @@
 [
   {
-    "id": "granite-peaks-autumn-pines",
-    "title": "Granite Peaks & Autumn Pines",
-    "caption": "High alpine ridge above pine trees and autumn foliage under clear blue skies.",
-    "date": "2026-10-19",
-    "location": "Alpine Pass",
+    "id": "andorra",
+    "location": "Andorra",
     "camera": "Fujifilm X-T30 II",
     "lens": "",
     "settings": "",
-    "full": "photos/full/granite-peaks-autumn-pines.jpg",
-    "thumb": "photos/thumbs/granite-peaks-autumn-pines.jpg",
+    "date": "2026-10-19",
+    "full": "photos/full/andorra.jpg",
+    "thumb": "photos/thumbs/andorra.jpg",
     "width": 1024,
     "height": 682
   }

@@ -152,34 +152,32 @@ def render_gallery_html(photos: list):
     """Generate or update gallery.html with the latest photos."""
     cards_html = []
     for idx, p in enumerate(photos):
-        title = p.get("title", "Untitled")
-        caption = p.get("caption", "")
-        date = p.get("date", "")
         camera = p.get("camera", "")
         location = p.get("location", "")
+        lens = p.get("lens", "")
+        settings = p.get("settings", "")
         thumb = p.get("thumb", "")
         full = p.get("full", "")
 
-        meta_items = []
-        if date:
-            meta_items.append(f"<span>{date}</span>")
-        if location:
-            meta_items.append(f"<span>📍 {location}</span>")
+        specs_items = []
         if camera:
-            meta_items.append(f'<span class="gallery-tag">{camera}</span>')
+            specs_items.append(f'<span class="gallery-tag">{camera}</span>')
+        if lens:
+            specs_items.append(f'<span>{lens}</span>')
+        if settings:
+            specs_items.append(f'<span>{settings}</span>')
 
-        meta_html = f'<div class="gallery-card-meta">{"".join(meta_items)}</div>' if meta_items else ""
-        caption_html = f'<p class="gallery-card-caption">{caption}</p>' if caption else ""
+        specs_html = f'<div class="gallery-specs">{" • ".join(specs_items)}</div>' if specs_items else ""
+        location_html = f'<span class="gallery-location">📍 {location}</span>' if location else ""
 
         card = f"""      <!-- Photo Card {idx + 1} -->
       <div class="gallery-card" data-index="{idx}">
         <div class="gallery-thumb-wrap">
-          <img src="/{thumb}" alt="{title}" loading="lazy">
+          <img src="/{thumb}" alt="{location or 'Photo'}" loading="lazy">
         </div>
         <div class="gallery-card-body">
-          <h4 class="gallery-card-title">{title}</h4>
-          {caption_html}
-          {meta_html}
+          {location_html}
+          {specs_html}
         </div>
       </div>"""
         cards_html.append(card)
@@ -262,9 +260,8 @@ def render_gallery_html(photos: list):
         <img id="lightboxImg" src="" alt="">
       </div>
       <div class="lightbox-info">
-        <h3 class="lightbox-title" id="lightboxTitle"></h3>
-        <p class="lightbox-caption" id="lightboxCaption"></p>
-        <div class="lightbox-meta-bar" id="lightboxMeta"></div>
+        <span class="lightbox-location" id="lightboxLocation"></span>
+        <div class="lightbox-specs" id="lightboxSpecs"></div>
       </div>
     </div>
   </div>
@@ -278,9 +275,8 @@ def render_gallery_html(photos: list):
       const galleryData = JSON.parse(document.getElementById('gallery-data').textContent || '[]');
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightboxImg');
-      const lightboxTitle = document.getElementById('lightboxTitle');
-      const lightboxCaption = document.getElementById('lightboxCaption');
-      const lightboxMeta = document.getElementById('lightboxMeta');
+      const lightboxLocation = document.getElementById('lightboxLocation');
+      const lightboxSpecs = document.getElementById('lightboxSpecs');
       const closeBtn = document.getElementById('lightboxClose');
       const prevBtn = document.getElementById('lightboxPrev');
       const nextBtn = document.getElementById('lightboxNext');
@@ -292,17 +288,14 @@ def render_gallery_html(photos: list):
         const item = galleryData[index];
 
         lightboxImg.src = '/' + item.full;
-        lightboxImg.alt = item.title || 'Photo';
-        lightboxTitle.textContent = item.title || '';
-        lightboxCaption.textContent = item.caption || '';
+        lightboxImg.alt = item.location ? ('Photo from ' + item.location) : 'Photo';
+        lightboxLocation.textContent = item.location ? ('📍 ' + item.location) : '';
 
-        const metaParts = [];
-        if (item.date) metaParts.push('<span>' + item.date + '</span>');
-        if (item.location) metaParts.push('<span>📍 ' + item.location + '</span>');
-        if (item.camera) metaParts.push('<span class="gallery-tag">' + item.camera + '</span>');
-        if (item.lens) metaParts.push('<span>' + item.lens + '</span>');
-        if (item.settings) metaParts.push('<span>' + item.settings + '</span>');
-        lightboxMeta.innerHTML = metaParts.join(' &bull; ');
+        const specsParts = [];
+        if (item.camera) specsParts.push('<span class="gallery-tag">' + item.camera + '</span>');
+        if (item.lens) specsParts.push('<span>' + item.lens + '</span>');
+        if (item.settings) specsParts.push('<span>' + item.settings + '</span>');
+        lightboxSpecs.innerHTML = specsParts.join(' &bull; ');
 
         const showNav = galleryData.length > 1;
         prevBtn.style.display = showNav ? 'flex' : 'none';
@@ -364,9 +357,9 @@ def render_gallery_html(photos: list):
     print(f"Updated {GALLERY_HTML} with {len(photos)} photo(s).")
 
 
-def add_photo(image_path: Path, title: str = None, caption: str = None,
-              date: str = None, location: str = None, camera: str = None,
-              lens: str = None, settings: str = None, push: bool = False):
+def add_photo(image_path: Path, location: str = None, camera: str = None,
+              lens: str = None, settings: str = None, date: str = None,
+              push: bool = False, **kwargs):
     if not image_path.exists():
         print(f"Error: File not found: {image_path}", file=sys.stderr)
         return False
@@ -374,15 +367,13 @@ def add_photo(image_path: Path, title: str = None, caption: str = None,
     with Image.open(image_path) as raw_img:
         exif = extract_exif_data(raw_img)
 
-    title = title or (input("Photo Title: ").strip() if sys.stdin.isatty() else image_path.stem.replace("-", " ").title())
-    caption = caption or ""
+    location = location or (input("Location: ").strip() if sys.stdin.isatty() else "Andorra")
     date = date or exif.get("date") or datetime.now().strftime("%Y-%m-%d")
     camera = camera or exif.get("camera") or "Fujifilm X-T30 II"
     lens = lens or exif.get("lens") or ""
     settings = settings or exif.get("settings") or ""
 
-    base_slug = slugify(title)
-    # Ensure unique filename
+    base_slug = slugify(location) or "photo"
     slug = base_slug
     counter = 1
     while (FULL_DIR / f"{slug}.jpg").exists():
@@ -394,13 +385,11 @@ def add_photo(image_path: Path, title: str = None, caption: str = None,
 
     entry = {
         "id": slug,
-        "title": title,
-        "caption": caption,
-        "date": date,
-        "location": location or "",
+        "location": location,
         "camera": camera,
         "lens": lens,
         "settings": settings,
+        "date": date,
         "full": full_rel,
         "thumb": thumb_rel,
         "width": full_w,
@@ -413,14 +402,14 @@ def add_photo(image_path: Path, title: str = None, caption: str = None,
     save_photos_json(photos)
     render_gallery_html(photos)
 
-    print(f"Successfully added '{title}' to gallery!")
+    print(f"Successfully added photo from '{location}' to gallery!")
     print(f"  Full web image: {full_rel} ({full_w}x{full_h})")
     print(f"  Thumbnail:      {thumb_rel}")
 
     if push:
         print("\nCommitting and pushing to GitHub...")
         subprocess.run(["git", "add", "photos/", "gallery.html"], cwd=REPO_ROOT, check=True)
-        subprocess.run(["git", "commit", "-m", f"Add photo: {title} to gallery"], cwd=REPO_ROOT, check=True)
+        subprocess.run(["git", "commit", "-m", f"Add photo from {location} to gallery"], cwd=REPO_ROOT, check=True)
         subprocess.run(["git", "push", "origin", "main"], cwd=REPO_ROOT, check=True)
         print("Done! Changes are live on GitHub.")
 

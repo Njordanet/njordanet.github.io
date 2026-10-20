@@ -182,20 +182,10 @@ HTML_PAGE = """<!DOCTYPE html>
             <img id="previewImg" src="" alt="Preview">
           </div>
 
-          <div class="form-group">
-            <label for="title">Title *</label>
-            <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Alpine Autumn Pines" required>
-          </div>
-
-          <div class="form-group">
-            <label for="caption">Caption</label>
-            <textarea id="caption" name="caption" class="form-control" placeholder="A short story or notes about this shot..."></textarea>
-          </div>
-
           <div class="grid-2">
             <div class="form-group">
-              <label for="location">Location</label>
-              <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Pyrenees, Spain">
+              <label for="location">Location *</label>
+              <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Andorra" required>
             </div>
             <div class="form-group">
               <label for="date">Date Taken</label>
@@ -206,7 +196,7 @@ HTML_PAGE = """<!DOCTYPE html>
           <div class="grid-2">
             <div class="form-group">
               <label for="camera">Camera</label>
-              <input type="text" id="camera" name="camera" class="form-control" placeholder="Fujifilm X-T30 II">
+              <input type="text" id="camera" name="camera" class="form-control" value="Fujifilm X-T30 II" placeholder="Fujifilm X-T30 II">
             </div>
             <div class="form-group">
               <label for="lens">Lens</label>
@@ -279,10 +269,6 @@ HTML_PAGE = """<!DOCTYPE html>
       reader.onload = (e) => {
         previewImg.src = e.target.result;
         previewArea.style.display = 'block';
-        if (!titleInput.value) {
-          const rawName = file.name.replace(/\\.[^/.]+$/, "").replace(/[-_]/g, " ");
-          titleInput.value = rawName.charAt(0).toUpperCase() + rawName.slice(1);
-        }
       };
       reader.readAsDataURL(file);
     }
@@ -307,7 +293,7 @@ HTML_PAGE = """<!DOCTYPE html>
         const data = await res.json();
         if (data.success) {
           statusAlert.className = 'status-msg status-success';
-          statusAlert.innerHTML = '🎉 Success! Photo "' + data.title + '" has been added and published. <a href="/gallery.html" target="_blank">View Live Gallery &rarr;</a>';
+          statusAlert.innerHTML = '🎉 Success! Photo from ' + (data.location || 'selected location') + ' has been added and published. <a href="/gallery.html" target="_blank">View Live Gallery &rarr;</a>';
           statusAlert.style.display = 'block';
           form.reset();
           previewArea.style.display = 'none';
@@ -388,8 +374,6 @@ class GalleryHandler(BaseHTTPRequestHandler):
                 self.send_json({"success": False, "error": "No image file provided"})
                 return
 
-            title = form.getvalue("title", "").strip()
-            caption = form.getvalue("caption", "").strip()
             location = form.getvalue("location", "").strip()
             date = form.getvalue("date", "").strip()
             camera = form.getvalue("camera", "").strip()
@@ -406,17 +390,15 @@ class GalleryHandler(BaseHTTPRequestHandler):
             try:
                 success = ap.add_photo(
                     tmp_path,
-                    title=title,
-                    caption=caption,
-                    date=date,
                     location=location,
                     camera=camera,
                     lens=lens,
                     settings=settings,
+                    date=date,
                     push=push
                 )
                 if success:
-                    self.send_json({"success": True, "title": title})
+                    self.send_json({"success": True, "location": location})
                 else:
                     self.send_json({"success": False, "error": "Failed to add photo."})
             except Exception as e:
