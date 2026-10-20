@@ -1,5 +1,17 @@
 [
   {
+    "id": "edinburgh-scotland",
+    "location": "Edinburgh, Scotland",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "date": "2026-10-19",
+    "full": "photos/full/edinburgh-scotland.jpg",
+    "thumb": "photos/thumbs/edinburgh-scotland.jpg",
+    "width": 1024,
+    "height": 750
+  },
+  {
     "id": "arthur-s-seat-scotland",
     "location": "Arthur’s Seat, Scotland",
     "camera": "Fujifilm X-T30 II",
