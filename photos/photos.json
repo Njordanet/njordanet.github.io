@@ -1,5 +1,17 @@
 [
   {
+    "id": "detroit",
+    "location": "Detroit",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "date": "2026-10-19",
+    "full": "photos/full/detroit.jpg",
+    "thumb": "photos/thumbs/detroit.jpg",
+    "width": 1024,
+    "height": 682
+  },
+  {
     "id": "barcelona-spain",
     "location": "Barcelona, Spain",
     "camera": "Fujifilm X-T30 II",
