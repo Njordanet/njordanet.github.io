@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-arbor",
+    "location": "Ann Arbor",
+    "camera": "Fujifilm X-T30 II",
+    "lens": "",
+    "settings": "",
+    "date": "2026-10-19",
+    "full": "photos/full/ann-arbor.jpg",
+    "thumb": "photos/thumbs/ann-arbor.jpg",
+    "width": 1024,
+    "height": 682
+  },
+  {
     "id": "andorra",
     "location": "Andorra",
     "camera": "Fujifilm X-T30 II",
