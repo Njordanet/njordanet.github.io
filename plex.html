@@ -284,6 +284,26 @@
       border-radius: 9999px;
       transition: width 0.5s ease-in-out;
     }
+    @keyframes progress-shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: 200px 0; }
+    }
+    .progress-bar.indeterminate {
+      width: 100% !important;
+      background: linear-gradient(90deg, var(--accent-olive) 0%, rgba(196, 159, 125, 0.45) 50%, var(--accent-olive) 100%);
+      background-size: 200px 100%;
+      animation: progress-shimmer 1.5s infinite linear;
+    }
+    .badge-pending {
+      background-color: rgba(196, 159, 125, 0.22);
+      color: var(--accent-brown);
+      border: 1px dashed var(--accent-brown);
+      animation: pulse-badge 2s infinite ease-in-out;
+    }
+    @keyframes pulse-badge {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
   </style>
 </head>
 <body>
@@ -437,9 +457,77 @@
     const PASS_KEY = 'njorda_plex_pass';
     let currentType = 'movie';
     let activeQueue = [];
+    let pendingQueuePlaceholders = [];
     let queuePollInterval = null;
     let isResultsMinimized = false;
     let currentResultsCount = 0;
+
+    function loadPendingPlaceholders() {
+      try {
+        const raw = sessionStorage.getItem('njorda_pending_requests');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const now = Date.now();
+          pendingQueuePlaceholders = parsed.filter(p => now - (p.createdAt || 0) < 120000);
+          savePendingPlaceholders();
+        }
+      } catch (e) {
+        pendingQueuePlaceholders = [];
+      }
+    }
+
+    function savePendingPlaceholders() {
+      try {
+        sessionStorage.setItem('njorda_pending_requests', JSON.stringify(pendingQueuePlaceholders));
+      } catch (e) {}
+    }
+
+    function addQueuePlaceholder(item) {
+      const placeholder = {
+        id: `placeholder-${item.tmdbId || item.id || Date.now()}`,
+        mediaType: currentType || 'movie',
+        movieId: item.id || item.tmdbId,
+        tmdbId: item.tmdbId,
+        title: item.title,
+        year: item.year,
+        status: 'adding to queue',
+        isPlaceholder: true,
+        createdAt: Date.now()
+      };
+
+      // Filter out duplicate placeholders by title
+      pendingQueuePlaceholders = pendingQueuePlaceholders.filter(p => 
+        (p.title || '').toLowerCase().trim() !== (item.title || '').toLowerCase().trim()
+      );
+      pendingQueuePlaceholders.unshift(placeholder);
+      savePendingPlaceholders();
+
+      combineAndRenderQueue([]);
+    }
+
+    function combineAndRenderQueue(serverQueue = []) {
+      const now = Date.now();
+      // Keep only placeholders newer than 2 minutes
+      pendingQueuePlaceholders = pendingQueuePlaceholders.filter(p => now - (p.createdAt || 0) < 120000);
+
+      // If server queue contains the item, remove placeholder
+      if (serverQueue && serverQueue.length > 0) {
+        pendingQueuePlaceholders = pendingQueuePlaceholders.filter(p => {
+          const matched = serverQueue.some(s => {
+            if (p.movieId && s.movieId && String(p.movieId) === String(s.movieId)) return true;
+            const pTitle = (p.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const sTitle = (s.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (pTitle && sTitle && (pTitle === sTitle || sTitle.includes(pTitle) || pTitle.includes(sTitle))) return true;
+            return false;
+          });
+          return !matched;
+        });
+        savePendingPlaceholders();
+      }
+
+      activeQueue = [...pendingQueuePlaceholders, ...serverQueue];
+      renderQueue(activeQueue);
+    }
 
     let apiBase = window.location.hostname.includes('njorda.net')
       ? 'https://api.njorda.net'
@@ -520,6 +608,10 @@
       document.getElementById('portalSection').style.display = 'block';
       const tagline = document.getElementById('portalTagline');
       if (tagline) tagline.textContent = 'plex.online // request system';
+
+      // Load placeholders from session and show if any
+      loadPendingPlaceholders();
+      combineAndRenderQueue([]);
 
       // Start queue polling
       fetchQueue();
@@ -611,11 +703,16 @@
         const res = await fetch(`${apiBase}/api/queue`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        if (!res.ok) return;
+        if (!res.ok) {
+          if (pendingQueuePlaceholders.length > 0) combineAndRenderQueue([]);
+          return;
+        }
         const data = await res.json();
-        activeQueue = data.queue || [];
-        renderQueue(activeQueue);
-      } catch (err) {}
+        const serverQueue = data.queue || [];
+        combineAndRenderQueue(serverQueue);
+      } catch (err) {
+        if (pendingQueuePlaceholders.length > 0) combineAndRenderQueue([]);
+      }
     }
 
     function renderQueue(items) {
@@ -644,8 +741,21 @@
         card.className = 'queue-item';
 
         let badgeClass = 'badge-monitored';
-        if (item.rawState === 'downloading') badgeClass = 'badge-in-library';
-        else if (item.rawState === 'importPending') badgeClass = 'badge-available';
+        if (item.isPlaceholder) {
+          badgeClass = 'badge-pending';
+        } else if (item.rawState === 'downloading') {
+          badgeClass = 'badge-in-library';
+        } else if (item.rawState === 'importPending') {
+          badgeClass = 'badge-available';
+        }
+
+        const progressBarHtml = item.isPlaceholder
+          ? `<div class="progress-bar indeterminate"></div>`
+          : `<div class="progress-bar" style="width: ${Math.max(4, item.progress)}%;"></div>`;
+
+        const detailsHtml = item.isPlaceholder
+          ? `<span>searching indexers for release...</span><span style="color: var(--accent-brown); font-weight: 700;">⏱ starting soon</span>`
+          : `<span>${item.progress}% (${item.downloaded} of ${item.size})</span><span style="color: var(--accent-olive); font-weight: 700;">⏱ ${item.timeleft}</span>`;
 
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
@@ -655,11 +765,10 @@
             <span class="media-badge ${badgeClass}" style="margin-bottom: 0; font-size: 10.5px;">${item.status}</span>
           </div>
           <div class="progress-track">
-            <div class="progress-bar" style="width: ${Math.max(4, item.progress)}%;"></div>
+            ${progressBarHtml}
           </div>
           <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-muted); font-family: var(--font-typewriter);">
-            <span>${item.progress}% (${item.downloaded} of ${item.size})</span>
-            <span style="color: var(--accent-olive); font-weight: 700;">⏱ ${item.timeleft}</span>
+            ${detailsHtml}
           </div>
         `;
         list.appendChild(card);
@@ -849,6 +958,17 @@
 
       const globalMsg = document.getElementById('portalGlobalMsg');
 
+      // 1. Instantly inject placeholder into the queue
+      addQueuePlaceholder(item);
+
+      // 2. Minimize search results so the user immediately sees the queue
+      if (!isResultsMinimized && currentResultsCount > 0) {
+        toggleResults();
+      }
+
+      // 3. Smoothly scroll down to the in-progress queue section
+      setTimeout(scrollToQueue, 150);
+
       try {
         const token = getToken();
         const res = await fetch(`${apiBase}/api/request`, {
@@ -868,22 +988,20 @@
           btn.textContent = '✓ Queued';
           btn.classList.add('portal-btn-secondary');
           globalMsg.className = 'status-msg success';
-          globalMsg.textContent = `${data.message || `Successfully queued "${item.title}"!`} Calculating ETA...`;
+          globalMsg.textContent = `${data.message || `Successfully queued "${item.title}"!`} Searching indexers...`;
           globalMsg.style.display = 'block';
 
-          // Minimize results so queue is prominently visible
-          if (!isResultsMinimized && currentResultsCount > 0) {
-            toggleResults();
-          }
-
-          // Smoothly scroll down to queue
-          setTimeout(scrollToQueue, 250);
-
-          // Fast poll queue to catch ETA
-          setTimeout(fetchQueue, 1500);
-          setTimeout(fetchQueue, 4000);
-          setTimeout(fetchQueue, 8000);
+          // Fast poll queue to catch the real download as soon as Radarr picks it up
+          setTimeout(fetchQueue, 1200);
+          setTimeout(fetchQueue, 3000);
+          setTimeout(fetchQueue, 6000);
+          setTimeout(fetchQueue, 10000);
         } else {
+          // Remove placeholder if request failed
+          pendingQueuePlaceholders = pendingQueuePlaceholders.filter(p => (p.title || '').toLowerCase() !== (item.title || '').toLowerCase());
+          savePendingPlaceholders();
+          combineAndRenderQueue([]);
+
           btn.disabled = false;
           btn.textContent = originalText;
           globalMsg.className = 'status-msg error';
@@ -891,6 +1009,11 @@
           globalMsg.style.display = 'block';
         }
       } catch (err) {
+        // Remove placeholder if connection failed
+        pendingQueuePlaceholders = pendingQueuePlaceholders.filter(p => (p.title || '').toLowerCase() !== (item.title || '').toLowerCase());
+        savePendingPlaceholders();
+        combineAndRenderQueue([]);
+
         btn.disabled = false;
         btn.textContent = originalText;
         globalMsg.className = 'status-msg error';
