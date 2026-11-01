@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>plex requests – njorda.net</title>
+  <title>plex – njorda.net</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>(function(){const t=localStorage.getItem('njorda_theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -10,15 +10,15 @@
   <style>
     /* Custom Portal Styles matching njorda.css */
     .portal-auth-card {
-      max-width: 480px;
-      margin: 20px auto;
+      max-width: 440px;
+      margin: 30px auto 40px;
       text-align: center;
     }
     .auth-input-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 18px;
+      gap: 14px;
+      margin-top: 14px;
     }
     .portal-input {
       font-family: var(--font-typewriter);
@@ -257,7 +257,7 @@
         <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">🌙</button>
         <div class="header-title flicker">njorda.net</div>
         <div class="tagline">
-          <i>plex.terminal // media request portal</i>
+          <i id="portalTagline">private // authentication required</i>
         </div>
       </div>
     </div>
@@ -274,24 +274,14 @@
       <a href="https://www.linkedin.com/in/jordannicholas" target="_blank">linkedin ↗</a>
     </nav>
 
-    <!-- Quote / Subtitle Section -->
-    <div class="box quote-box">
-      <div class="quote-content">
-        <span class="quote-badge">plex</span>
-        <blockquote class="quote-text">
-          &ldquo;request movies, tv series & audiobooks — automatically queued in 1080p&rdquo;
-        </blockquote>
-      </div>
-    </div>
-
     <!-- AUTHENTICATION CARD (Shown when locked) -->
     <div id="authSection" class="box portal-auth-card">
       <div class="box-header">
-        <h2>access passcode required</h2>
+        <h2>plex</h2>
       </div>
       <div class="box-body" style="margin-left: 0; border-left: none;">
-        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 14px;">
-          Enter the friends & family passcode to unlock the Plex media request portal.
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 8px;">
+          Enter passcode to continue.
         </p>
         <div id="authErrorMsg" class="status-msg error"></div>
         <form id="authForm" class="auth-input-group" onsubmit="handleLogin(event)">
@@ -300,63 +290,78 @@
             <input type="checkbox" id="rememberMe" checked />
             Remember passcode on this device
           </label>
-          <button type="submit" id="authSubmitBtn" class="portal-btn">unlock portal</button>
+          <button type="submit" id="authSubmitBtn" class="portal-btn">enter</button>
         </form>
       </div>
     </div>
 
-    <!-- MAIN REQUEST PORTAL (Shown when authenticated) -->
-    <div id="portalSection" class="box" style="display: none;">
-      <div class="box-header portal-header-actions">
-        <h2>media requests</h2>
-        <button onclick="handleLogout()" class="portal-btn portal-btn-sm portal-btn-secondary" title="Lock portal and clear saved passcode">lock / logout</button>
-      </div>
-      <div class="box-body">
+    <!-- LOGGED-IN EXPERIENCE (All hidden until passcode is verified) -->
+    <div id="portalSection" style="display: none;">
 
-        <!-- Global Status Messages -->
-        <div id="portalGlobalMsg" class="status-msg"></div>
-
-        <!-- Media Tabs -->
-        <div class="portal-tabs">
-          <button class="portal-tab active" data-type="movie" onclick="switchMediaType('movie')">🎬 Movies</button>
-          <button class="portal-tab" data-type="tv" onclick="switchMediaType('tv')">📺 TV Series</button>
-          <button class="portal-tab" data-type="book" onclick="switchMediaType('book')">🎧 Audiobooks</button>
+      <!-- Subtitle Quote -->
+      <div class="box quote-box">
+        <div class="quote-content">
+          <span class="quote-badge">plex</span>
+          <blockquote class="quote-text">
+            &ldquo;search & request titles directly for the plex library&rdquo;
+          </blockquote>
         </div>
+      </div>
 
-        <!-- Search Bar -->
-        <form class="search-bar-wrap" onsubmit="handleSearch(event)">
-          <input type="search" id="searchInput" class="portal-input" placeholder="Search movies by title..." required />
-          <button type="submit" id="searchBtn" class="portal-btn">search</button>
-        </form>
-
-        <!-- Loading indicator -->
-        <div id="searchSpinner" style="display: none; text-align: center; padding: 24px; color: var(--text-muted);">
-          <i>searching media databases...</i>
+      <!-- Main Request Interface -->
+      <div class="box">
+        <div class="box-header portal-header-actions">
+          <h2>requests</h2>
+          <button onclick="handleLogout()" class="portal-btn portal-btn-sm portal-btn-secondary" title="Lock and log out">lock</button>
         </div>
+        <div class="box-body">
 
-        <!-- Results Grid -->
-        <div id="resultsGrid" class="results-grid"></div>
+          <!-- Global Status Messages -->
+          <div id="portalGlobalMsg" class="status-msg"></div>
 
-        <!-- Empty / Help text -->
-        <div id="resultsEmpty" style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px;">
-          Search for a title above to check availability or queue an instant download.
+          <!-- Media Tabs -->
+          <div class="portal-tabs">
+            <button class="portal-tab active" data-type="movie" onclick="switchMediaType('movie')">🎬 Movies</button>
+            <button class="portal-tab" data-type="tv" onclick="switchMediaType('tv')">📺 TV Series</button>
+            <button class="portal-tab" data-type="book" onclick="switchMediaType('book')">🎧 Audiobooks</button>
+          </div>
+
+          <!-- Search Bar -->
+          <form class="search-bar-wrap" onsubmit="handleSearch(event)">
+            <input type="search" id="searchInput" class="portal-input" placeholder="Search movies by title..." required />
+            <button type="submit" id="searchBtn" class="portal-btn">search</button>
+          </form>
+
+          <!-- Loading indicator -->
+          <div id="searchSpinner" style="display: none; text-align: center; padding: 24px; color: var(--text-muted);">
+            <i>searching library databases...</i>
+          </div>
+
+          <!-- Results Grid -->
+          <div id="resultsGrid" class="results-grid"></div>
+
+          <!-- Empty / Help text -->
+          <div id="resultsEmpty" style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px;">
+            Search for a title above to check availability or submit a request.
+          </div>
+
         </div>
+      </div>
 
+      <!-- Instructions & Details (Behind login only) -->
+      <div class="box">
+        <div class="box-header">
+          <h2>how it works</h2>
+        </div>
+        <div class="box-body">
+          <ul>
+            <li><b>Movies & TV Shows:</b> Automatically processed in high definition (1080p) and synced directly to your Plex library.</li>
+            <li><b>Audiobooks:</b> Tracked with full chapters and metadata under the Audio Books collection.</li>
+            <li><b>Library Sync:</b> Plex refreshes its library automatically once requested titles arrive.</li>
+          </ul>
+        </div>
       </div>
-    </div>
 
-    <!-- Notes Box -->
-    <div class="box">
-      <div class="box-header">
-        <h2>how it works</h2>
-      </div>
-      <div class="box-body">
-        <ul>
-          <li><b>Movies & TV Shows:</b> Automatically downloaded in storage-efficient <b>HD-1080p</b> (never bulky uncompressed remuxes).</li>
-          <li><b>Audiobooks:</b> Tracked and processed with full metadata under the audio books library.</li>
-          <li><b>Sync:</b> Plex automatically scans and adds new content as soon as downloads finish.</li>
-        </ul>
-      </div>
     </div>
 
     <!-- Footer -->
@@ -374,9 +379,8 @@
     let currentType = 'movie';
     let apiBase = window.location.hostname.includes('njorda.net')
       ? 'https://api.njorda.net'
-      : (window.location.origin.includes('5055') ? '' : 'http://localhost:5055');
+      : (window.location.origin.includes('5055') ? '' : 'https://localhost:5055');
 
-    // Placeholders for media types
     const placeholders = {
       movie: 'Search movies by title...',
       tv: 'Search TV series by title...',
@@ -384,13 +388,11 @@
     };
 
     async function checkApiConnection() {
-      // If on njorda.net, try api.njorda.net first, fallback to plex.njorda.net if needed
       if (window.location.hostname.includes('njorda.net')) {
         try {
           const res = await fetch(`${apiBase}/health`, { method: 'GET', signal: AbortSignal.timeout(3500) });
           if (res.ok) return;
         } catch (e) {
-          // Try plex.njorda.net fallback
           try {
             const fallbackRes = await fetch('https://plex.njorda.net/health', { method: 'GET', signal: AbortSignal.timeout(3500) });
             if (fallbackRes.ok) {
@@ -402,7 +404,6 @@
       }
     }
 
-    // On page load
     document.addEventListener('DOMContentLoaded', async () => {
       await checkApiConnection();
       const savedToken = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
@@ -425,7 +426,6 @@
           sessionStorage.removeItem(STORAGE_KEY);
         }
       } catch (err) {
-        // If network error, still try to show portal if token exists
         showPortal();
       }
     }
@@ -433,6 +433,9 @@
     function showAuth(errorMsg = '') {
       document.getElementById('authSection').style.display = 'block';
       document.getElementById('portalSection').style.display = 'none';
+      const tagline = document.getElementById('portalTagline');
+      if (tagline) tagline.textContent = 'private // authentication required';
+
       const errEl = document.getElementById('authErrorMsg');
       if (errorMsg) {
         errEl.textContent = errorMsg;
@@ -446,6 +449,8 @@
     function showPortal() {
       document.getElementById('authSection').style.display = 'none';
       document.getElementById('portalSection').style.display = 'block';
+      const tagline = document.getElementById('portalTagline');
+      if (tagline) tagline.textContent = 'plex.online // request system';
       document.getElementById('searchInput').focus();
     }
 
@@ -480,11 +485,11 @@
           errEl.style.display = 'block';
         }
       } catch (err) {
-        errEl.textContent = 'Unable to reach request backend. Ensure the Cloudflare tunnel is connected.';
+        errEl.textContent = 'Unable to reach request backend. Please try again later.';
         errEl.style.display = 'block';
       } finally {
         btn.disabled = false;
-        btn.textContent = 'unlock portal';
+        btn.textContent = 'enter';
       }
     }
 
@@ -551,7 +556,7 @@
       } catch (err) {
         spinner.style.display = 'none';
         globalMsg.className = 'status-msg error';
-        globalMsg.textContent = 'Search failed. Please check network connection.';
+        globalMsg.textContent = 'Search failed. Please check connection.';
         globalMsg.style.display = 'block';
       }
     }
