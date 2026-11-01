@@ -374,7 +374,6 @@
           <!-- Media Tabs -->
           <div class="portal-tabs">
             <button class="portal-tab active" data-type="movie" onclick="switchMediaType('movie')">🎬 Movies</button>
-            <button class="portal-tab" data-type="tv" onclick="switchMediaType('tv')">📺 TV Series</button>
             <button class="portal-tab" data-type="book" onclick="switchMediaType('book')">🎧 Audiobooks</button>
           </div>
 
@@ -407,7 +406,7 @@
         </div>
         <div class="box-body">
           <ul>
-            <li><b>Movies & TV Shows:</b> Automatically processed in high definition (1080p) and synced directly to your Plex library.</li>
+            <li><b>Movies:</b> Automatically processed in high definition (1080p) and synced directly to your Plex library.</li>
             <li><b>Audiobooks:</b> Tracked with full chapters and metadata under the Audio Books collection.</li>
             <li><b>Live Progress:</b> Active requests display real-time download progress and time remaining above.</li>
             <li><b>Library Sync:</b> Plex refreshes its library automatically once requested titles finish.</li>
@@ -440,7 +439,6 @@
 
     const placeholders = {
       movie: 'Search movies by title...',
-      tv: 'Search TV series by title...',
       book: 'Search audiobook title or author...'
     };
 
@@ -628,7 +626,7 @@
       list.innerHTML = '';
 
       items.forEach(item => {
-        const icon = item.mediaType === 'movie' ? '🎬' : (item.mediaType === 'tv' ? '📺' : '🎧');
+        const icon = item.mediaType === 'movie' ? '🎬' : '🎧';
         const card = document.createElement('div');
         card.className = 'queue-item';
 
@@ -698,7 +696,7 @@
         spinner.style.display = 'none';
 
         if (!data.results || data.results.length === 0) {
-          empty.textContent = `No ${currentType === 'movie' ? 'movies' : (currentType === 'tv' ? 'TV shows' : 'audiobooks')} found for "${query}".`;
+          empty.textContent = `No ${currentType === 'movie' ? 'movies' : 'audiobooks'} found for "${query}".`;
           empty.style.display = 'block';
           return;
         }
@@ -722,7 +720,7 @@
 
         const posterHtml = item.poster
           ? `<img src="${item.poster}" class="media-poster" alt="${item.title}" loading="lazy" onerror="this.outerHTML='<div class=\\'media-poster media-poster-placeholder\\'>📖</div>'"/>`
-          : `<div class="media-poster media-poster-placeholder">${currentType === 'movie' ? '🎬' : (currentType === 'tv' ? '📺' : '🎧')}</div>`;
+          : `<div class="media-poster media-poster-placeholder">${currentType === 'movie' ? '🎬' : '🎧'}</div>`;
 
         let badgeClass = 'badge-available';
         let badgeText = item.status || 'Available';
@@ -750,7 +748,6 @@
 
         let subText = '';
         if (currentType === 'movie') subText = item.year ? `${item.year}` : '';
-        else if (currentType === 'tv') subText = `${item.year || ''} • ${item.seasonCount || 1} seasons`;
         else if (currentType === 'book') subText = item.author ? `by ${item.author}` : '';
 
         card.innerHTML = `
