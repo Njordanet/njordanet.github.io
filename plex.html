@@ -349,12 +349,6 @@
           <!-- Global Status Messages -->
           <div id="portalGlobalMsg" class="status-msg"></div>
 
-          <!-- Media Tabs -->
-          <div class="portal-tabs">
-            <button class="portal-tab active" data-type="movie" onclick="switchMediaType('movie')">🎬 Movies</button>
-            <button class="portal-tab" data-type="book" onclick="switchMediaType('book')">🎧 Audiobooks</button>
-          </div>
-
           <!-- Search Bar -->
           <form class="search-bar-wrap" onsubmit="handleSearch(event)">
             <input type="search" id="searchInput" class="portal-input" placeholder="Search movies by title..." required />
@@ -408,18 +402,6 @@
                 <li><b>Exclusions:</b> 4K UHD and raw Remux disc rips are disabled to preserve server capacity.</li>
               </ul>
             </div>
-
-            <div class="item-card">
-              <div class="card-top">
-                <h4>🎧 Audiobooks</h4>
-                <span class="card-badge">spoken fidelity</span>
-              </div>
-              <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 13px; line-height: 1.6; color: var(--text-main);">
-                <li><b>Edition:</b> Unabridged audiobooks with chapter tagging and complete author metadata.</li>
-                <li><b>Format:</b> Optimized spoken word audio (M4B / MP3) with high voice clarity.</li>
-                <li><b>Plex Sync:</b> Tracked under the Audio Books collection with automatic library refresh upon completion.</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -448,8 +430,7 @@
       : (window.location.origin.includes('5055') ? '' : 'https://localhost:5055');
 
     const placeholders = {
-      movie: 'Search movies by title...',
-      book: 'Search audiobook title or author...'
+      movie: 'Search movies by title...'
     };
 
     async function checkApiConnection() {
@@ -708,7 +689,7 @@
         spinner.style.display = 'none';
 
         if (!data.results || data.results.length === 0) {
-          empty.textContent = `No ${currentType === 'movie' ? 'movies' : 'audiobooks'} found for "${query}".`;
+          empty.textContent = `No movies found for "${query}".`;
           empty.style.display = 'block';
           return;
         }
@@ -731,8 +712,8 @@
         card.className = 'media-card';
 
         const posterHtml = item.poster
-          ? `<img src="${item.poster}" class="media-poster" alt="${item.title}" loading="lazy" onerror="this.outerHTML='<div class=\\'media-poster media-poster-placeholder\\'>📖</div>'"/>`
-          : `<div class="media-poster media-poster-placeholder">${currentType === 'movie' ? '🎬' : '🎧'}</div>`;
+          ? `<img src="${item.poster}" class="media-poster" alt="${item.title}" loading="lazy" onerror="this.outerHTML='<div class=\\'media-poster media-poster-placeholder\\'>🎬</div>'"/>`
+          : `<div class="media-poster media-poster-placeholder">🎬</div>`;
 
         let badgeClass = 'badge-available';
         let badgeText = item.status || 'Available';
@@ -758,9 +739,7 @@
           isActionDisabled = true;
         }
 
-        let subText = '';
-        if (currentType === 'movie') subText = item.year ? `${item.year}` : '';
-        else if (currentType === 'book') subText = item.author ? `by ${item.author}` : '';
+        let subText = item.year ? `${item.year}` : '';
 
         card.innerHTML = `
           <div class="media-card-top">
@@ -774,7 +753,7 @@
           <div class="media-overview">${item.overview || 'No synopsis provided.'}</div>
           <div class="media-card-action">
             <button class="portal-btn portal-btn-sm ${btnClass}" ${isActionDisabled ? 'disabled' : ''} onclick="submitRequest(this, ${JSON.stringify(item).replace(/"/g, '&quot;')})">
-              ${currentType === 'book' && !item.inLibrary && !inQueue ? 'Request Audiobook' : actionText}
+              ${actionText}
             </button>
           </div>
         `;
