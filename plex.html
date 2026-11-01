@@ -338,16 +338,6 @@
     <!-- LOGGED-IN EXPERIENCE (All hidden until passcode is verified) -->
     <div id="portalSection" style="display: none;">
 
-      <!-- Subtitle Quote -->
-      <div class="box quote-box">
-        <div class="quote-content">
-          <span class="quote-badge">plex</span>
-          <blockquote class="quote-text">
-            &ldquo;search & request titles directly for the plex library&rdquo;
-          </blockquote>
-        </div>
-      </div>
-
       <!-- Main Request Interface -->
       <div class="box">
         <div class="box-header portal-header-actions">
@@ -399,18 +389,38 @@
         </div>
       </div>
 
-      <!-- Instructions & Details (Behind login only) -->
+      <!-- Download Priorities & Specifications -->
       <div class="box">
         <div class="box-header">
-          <h2>how it works</h2>
+          <h2>download priorities</h2>
         </div>
         <div class="box-body">
-          <ul>
-            <li><b>Movies:</b> Automatically processed in high definition (1080p) and synced directly to your Plex library.</li>
-            <li><b>Audiobooks:</b> Tracked with full chapters and metadata under the Audio Books collection.</li>
-            <li><b>Live Progress:</b> Active requests display real-time download progress and time remaining above.</li>
-            <li><b>Library Sync:</b> Plex refreshes its library automatically once requested titles finish.</li>
-          </ul>
+          <div class="items-grid" style="margin-top: 4px; margin-bottom: 8px;">
+            <div class="item-card">
+              <div class="card-top">
+                <h4>🎬 Movies</h4>
+                <span class="card-badge">1080p standard</span>
+              </div>
+              <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 13px; line-height: 1.6; color: var(--text-main);">
+                <li><b>Target Quality:</b> High Definition (1080p) exclusively.</li>
+                <li><b>Size Target:</b> Storage-efficient encodes under 3 GB (maximum hard limit 5 GB).</li>
+                <li><b>Codec:</b> Lightweight x265 / HEVC releases prioritized for high quality and bandwidth efficiency.</li>
+                <li><b>Exclusions:</b> 4K UHD and raw Remux disc rips are disabled to preserve server capacity.</li>
+              </ul>
+            </div>
+
+            <div class="item-card">
+              <div class="card-top">
+                <h4>🎧 Audiobooks</h4>
+                <span class="card-badge">spoken fidelity</span>
+              </div>
+              <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 13px; line-height: 1.6; color: var(--text-main);">
+                <li><b>Edition:</b> Unabridged audiobooks with chapter tagging and complete author metadata.</li>
+                <li><b>Format:</b> Optimized spoken word audio (M4B / MP3) with high voice clarity.</li>
+                <li><b>Plex Sync:</b> Tracked under the Audio Books collection with automatic library refresh upon completion.</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
 
