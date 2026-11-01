@@ -55,30 +55,6 @@
   --selection-text: #ECE7DF;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-canvas: #1C1D18;
-    --bg-card: #262921;
-    --bg-subtle: #21241C;
-    --border-soft: #3D4235;
-    --border-focus: #8FA876;
-    --text-main: #ECE7DF;
-    --text-muted: #A3A897;
-    --accent-olive: #8FA876;
-    --accent-olive-hover: #A7C28C;
-    --accent-brown: #C49F7D;
-    --accent-brown-hover: #DBB594;
-    --badge-bg: #32362A;
-    --notebook-margin: rgba(143, 168, 118, 0.35);
-    --dot-grid-color: #3D4235;
-    --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.45);
-    --link-hover-bg: rgba(143, 168, 118, 0.16);
-    --selection-bg: #4B5538;
-    --selection-text: #ECE7DF;
-  }
-}
-
 /* Base Document */
 html {
   box-sizing: border-box;
