@@ -342,7 +342,10 @@
       <div class="box">
         <div class="box-header portal-header-actions">
           <h2>requests</h2>
-          <button onclick="handleLogout()" class="portal-btn portal-btn-sm portal-btn-secondary" title="Lock and log out">lock</button>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button id="queueNavBtn" onclick="scrollToQueue()" class="portal-btn portal-btn-sm portal-btn-secondary" style="display: none;" title="Jump down to active queue">queue (0) ↓</button>
+            <button onclick="handleLogout()" class="portal-btn portal-btn-sm portal-btn-secondary" title="Lock and log out">lock</button>
+          </div>
         </div>
         <div class="box-body" style="padding-top: 14px; padding-bottom: 14px;">
 
@@ -358,6 +361,17 @@
           <!-- Loading indicator -->
           <div id="searchSpinner" style="display: none; text-align: center; padding: 20px; color: var(--text-muted);">
             <i>searching library databases...</i>
+          </div>
+
+          <!-- Results Header & Controls (Minimize / Clear) -->
+          <div id="resultsHeader" style="display: none; justify-content: space-between; align-items: center; margin-top: 14px; margin-bottom: 2px; padding: 6px 0 8px; border-bottom: 1px dashed var(--border-soft);">
+            <div style="font-size: 13px; font-family: var(--font-typewriter); color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+              <span id="resultsCount">0 results</span>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" id="toggleResultsBtn" onclick="toggleResults()" class="portal-btn portal-btn-sm portal-btn-secondary" title="Minimize or show search results">minimize</button>
+              <button type="button" onclick="clearResults()" class="portal-btn portal-btn-sm portal-btn-secondary" title="Clear search results">clear</button>
+            </div>
           </div>
 
           <!-- Results Grid -->
@@ -424,6 +438,8 @@
     let currentType = 'movie';
     let activeQueue = [];
     let queuePollInterval = null;
+    let isResultsMinimized = false;
+    let currentResultsCount = 0;
 
     let apiBase = window.location.hostname.includes('njorda.net')
       ? 'https://api.njorda.net'
@@ -606,14 +622,20 @@
       const sec = document.getElementById('queueSection');
       const list = document.getElementById('queueList');
       const badge = document.getElementById('queueBadge');
+      const queueNavBtn = document.getElementById('queueNavBtn');
 
       if (!items || items.length === 0) {
         sec.style.display = 'none';
+        if (queueNavBtn) queueNavBtn.style.display = 'none';
         return;
       }
 
       sec.style.display = 'block';
       badge.textContent = items.length;
+      if (queueNavBtn) {
+        queueNavBtn.style.display = 'inline-flex';
+        queueNavBtn.textContent = `queue (${items.length}) ↓`;
+      }
       list.innerHTML = '';
 
       items.forEach(item => {
@@ -644,19 +666,59 @@
       });
     }
 
+    function toggleResults() {
+      const grid = document.getElementById('resultsGrid');
+      const btn = document.getElementById('toggleResultsBtn');
+      if (!grid || !btn) return;
+
+      isResultsMinimized = !isResultsMinimized;
+      if (isResultsMinimized) {
+        grid.style.display = 'none';
+        btn.textContent = `expand (${currentResultsCount})`;
+        btn.title = 'Expand search results';
+      } else {
+        grid.style.display = 'grid';
+        btn.textContent = 'minimize';
+        btn.title = 'Minimize search results';
+      }
+    }
+
+    function clearResults() {
+      const grid = document.getElementById('resultsGrid');
+      const header = document.getElementById('resultsHeader');
+      const empty = document.getElementById('resultsEmpty');
+      const input = document.getElementById('searchInput');
+
+      if (grid) {
+        grid.innerHTML = '';
+        grid.style.display = 'grid';
+      }
+      if (header) header.style.display = 'none';
+      if (empty) {
+        empty.style.display = 'none';
+        empty.textContent = '';
+      }
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      isResultsMinimized = false;
+      currentResultsCount = 0;
+    }
+
+    function scrollToQueue() {
+      const queue = document.getElementById('queueSection');
+      if (queue && queue.style.display !== 'none') {
+        queue.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
     function switchMediaType(type) {
       currentType = type;
       document.querySelectorAll('.portal-tab').forEach(t => {
         t.classList.toggle('active', t.getAttribute('data-type') === type);
       });
-      const input = document.getElementById('searchInput');
-      input.placeholder = placeholders[type] || 'Search...';
-      input.value = '';
-      document.getElementById('resultsGrid').innerHTML = '';
-      const empty = document.getElementById('resultsEmpty');
-      empty.style.display = 'none';
-      empty.textContent = '';
-      input.focus();
+      clearResults();
     }
 
     async function handleSearch(e) {
@@ -668,11 +730,14 @@
       const grid = document.getElementById('resultsGrid');
       const empty = document.getElementById('resultsEmpty');
       const globalMsg = document.getElementById('portalGlobalMsg');
+      const header = document.getElementById('resultsHeader');
 
       grid.innerHTML = '';
+      grid.style.display = 'grid';
       empty.style.display = 'none';
       spinner.style.display = 'block';
       globalMsg.style.display = 'none';
+      if (header) header.style.display = 'none';
 
       try {
         const token = getToken();
@@ -691,6 +756,7 @@
         if (!data.results || data.results.length === 0) {
           empty.textContent = `No movies found for "${query}".`;
           empty.style.display = 'block';
+          if (header) header.style.display = 'none';
           return;
         }
 
@@ -705,6 +771,21 @@
 
     function renderResults(items) {
       const grid = document.getElementById('resultsGrid');
+      const header = document.getElementById('resultsHeader');
+      const countEl = document.getElementById('resultsCount');
+      const toggleBtn = document.getElementById('toggleResultsBtn');
+
+      currentResultsCount = items.length;
+      isResultsMinimized = false;
+
+      if (header && countEl && toggleBtn) {
+        header.style.display = 'flex';
+        countEl.textContent = `${items.length} ${items.length === 1 ? 'result' : 'results'}`;
+        toggleBtn.textContent = 'minimize';
+        toggleBtn.title = 'Minimize search results';
+      }
+
+      grid.style.display = 'grid';
       grid.innerHTML = '';
 
       items.forEach(item => {
@@ -789,12 +870,19 @@
           globalMsg.className = 'status-msg success';
           globalMsg.textContent = `${data.message || `Successfully queued "${item.title}"!`} Calculating ETA...`;
           globalMsg.style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+          // Minimize results so queue is prominently visible
+          if (!isResultsMinimized && currentResultsCount > 0) {
+            toggleResults();
+          }
+
+          // Smoothly scroll down to queue
+          setTimeout(scrollToQueue, 250);
 
           // Fast poll queue to catch ETA
-          setTimeout(fetchQueue, 2000);
-          setTimeout(fetchQueue, 5000);
-          setTimeout(fetchQueue, 10000);
+          setTimeout(fetchQueue, 1500);
+          setTimeout(fetchQueue, 4000);
+          setTimeout(fetchQueue, 8000);
         } else {
           btn.disabled = false;
           btn.textContent = originalText;
