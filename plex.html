@@ -96,7 +96,7 @@
     .portal-tabs {
       display: flex;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
     .portal-tab {
@@ -123,7 +123,7 @@
     .search-bar-wrap {
       display: flex;
       gap: 8px;
-      margin-bottom: 24px;
+      margin-bottom: 0;
     }
     .search-bar-wrap input {
       flex: 1;
@@ -132,6 +132,8 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 16px;
+    }
+    .results-grid:not(:empty) {
       margin-top: 16px;
     }
     .media-card {
@@ -346,27 +348,13 @@
         </div>
       </div>
 
-      <!-- ACTIVE QUEUE & LIVE ETA TRACKER -->
-      <div id="queueSection" class="box" style="display: none;">
-        <div class="box-header portal-header-actions">
-          <h2 style="display: flex; align-items: center; gap: 8px;">
-            in progress
-            <span id="queueBadge" class="quote-badge" style="background-color: var(--accent-olive); color: #FAF7F2;">0</span>
-          </h2>
-          <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-typewriter);">live updates</span>
-        </div>
-        <div class="box-body" style="padding-top: 14px; padding-bottom: 14px;">
-          <div id="queueList" style="display: flex; flex-direction: column; gap: 10px;"></div>
-        </div>
-      </div>
-
       <!-- Main Request Interface -->
       <div class="box">
         <div class="box-header portal-header-actions">
           <h2>requests</h2>
           <button onclick="handleLogout()" class="portal-btn portal-btn-sm portal-btn-secondary" title="Lock and log out">lock</button>
         </div>
-        <div class="box-body">
+        <div class="box-body" style="padding-top: 14px; padding-bottom: 14px;">
 
           <!-- Global Status Messages -->
           <div id="portalGlobalMsg" class="status-msg"></div>
@@ -384,18 +372,30 @@
           </form>
 
           <!-- Loading indicator -->
-          <div id="searchSpinner" style="display: none; text-align: center; padding: 24px; color: var(--text-muted);">
+          <div id="searchSpinner" style="display: none; text-align: center; padding: 20px; color: var(--text-muted);">
             <i>searching library databases...</i>
           </div>
 
           <!-- Results Grid -->
           <div id="resultsGrid" class="results-grid"></div>
 
-          <!-- Empty / Help text -->
-          <div id="resultsEmpty" style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px;">
-            Search for a title above to check availability or submit a request.
-          </div>
+          <!-- Empty message (only shown when search returns 0 results) -->
+          <div id="resultsEmpty" style="display: none; color: var(--text-muted); font-size: 13px; text-align: center; padding: 14px 0 4px;"></div>
 
+        </div>
+      </div>
+
+      <!-- ACTIVE QUEUE & LIVE ETA TRACKER -->
+      <div id="queueSection" class="box" style="display: none;">
+        <div class="box-header portal-header-actions">
+          <h2 style="display: flex; align-items: center; gap: 8px;">
+            in progress
+            <span id="queueBadge" class="quote-badge" style="background-color: var(--accent-olive); color: #FAF7F2;">0</span>
+          </h2>
+          <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-typewriter);">live updates</span>
+        </div>
+        <div class="box-body" style="padding-top: 14px; padding-bottom: 14px;">
+          <div id="queueList" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
       </div>
 
@@ -662,7 +662,9 @@
       input.placeholder = placeholders[type] || 'Search...';
       input.value = '';
       document.getElementById('resultsGrid').innerHTML = '';
-      document.getElementById('resultsEmpty').style.display = 'block';
+      const empty = document.getElementById('resultsEmpty');
+      empty.style.display = 'none';
+      empty.textContent = '';
       input.focus();
     }
 
